@@ -1,5 +1,5 @@
-import * as Iterables from "./pipe/iterable/operators";
-import * as Generators from "./pipe/iterable/generators";
+import * as Iterables from "./iterable/operators";
+import * as Generators from "./iterable/generators";
 import { $$ } from "./pipe";
 
 export {
