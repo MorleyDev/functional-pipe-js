@@ -6,6 +6,9 @@
   "scripts": {
     "compile": "tsc -p ."
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MorleyDev/functional-pipe-js.git"
