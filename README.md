@@ -5,9 +5,7 @@ A ponyfill for the proposed Pipeline operator |> alongside utility Iterable mapr
 Example usage:
 
 ```js
-import { $$ } from "pipe";
-import * as Iterables from "pipe/iterable/operators"
-import * as Generators from "pipe/iterable/generators"
+import { $$, Iterables, Generators } from "pipe";
 
 const values = $$(Generators.infinite())
 	.$(Iterables.skip(10))
