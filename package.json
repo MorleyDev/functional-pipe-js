@@ -1,0 +1,20 @@
+{
+  "name": "functional-pipe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorleyDev/functional-pipe-js.git"
+  },
+  "author": "Jason Morley <morleydev.co.uk@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MorleyDev/functional-pipe-js/issues"
+  },
+  "homepage": "https://github.com/MorleyDev/functional-pipe-js#readme",
+  "devDependencies": {
+    "typescript": "2.6.1"
+  }
+}
