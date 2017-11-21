@@ -2,6 +2,17 @@ export function* unit<T>(iterable: Iterable<T>): Iterable<T> {
 	return yield* iterable;
 }
 
+export function tap<T>(tapper: (value: T, index: number) => void): (it: Iterable<T>) => Iterable<T> {
+	return function* (it) {
+		let index = 0;
+		for (const value of it) {
+			tapper(value, index);
+			yield value;
+			index = index + 1;
+		}
+	};
+}
+
 export function map<T, U>(mapper: (x: T, index: number) => U): (it: Iterable<T>) => Iterable<U> {
 	return function* (iterable: Iterable<T>): Iterable<U> {
 		let index = 0;
@@ -114,6 +125,13 @@ export function last<T>(iterable: Iterable<T>): T | undefined {
 			last = item;
 		}
 		return last;
+}
+
+export function first<T>(iterable: Iterable<T>): T | undefined {
+	for (const item of iterable) {
+		return item;
+	}
+	return undefined;
 }
 
 export function skip(count: number): <T>(iterable: Iterable<T>) => Iterable<T> {

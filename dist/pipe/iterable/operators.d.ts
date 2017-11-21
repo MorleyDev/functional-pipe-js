@@ -1,4 +1,5 @@
 export declare function unit<T>(iterable: Iterable<T>): Iterable<T>;
+export declare function tap<T>(tapper: (value: T, index: number) => void): (it: Iterable<T>) => Iterable<T>;
 export declare function map<T, U>(mapper: (x: T, index: number) => U): (it: Iterable<T>) => Iterable<U>;
 export declare function flatMap<T, U>(mapper: (x: T, index: number) => Iterable<U>): (it: Iterable<T>) => Iterable<U>;
 export declare function filter<T>(predicate: (x: T, index: number) => boolean): (it: Iterable<T>) => Iterable<T>;
@@ -9,6 +10,7 @@ export declare function take(count: number): <T>(iterable: Iterable<T>) => Itera
 export declare function takeWhile<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T>;
 export declare function takeUntil<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T>;
 export declare function last<T>(iterable: Iterable<T>): T | undefined;
+export declare function first<T>(iterable: Iterable<T>): T | undefined;
 export declare function skip(count: number): <T>(iterable: Iterable<T>) => Iterable<T>;
 export declare function skipWhile<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T>;
 export declare function concat<T>(...iterables: Iterable<T>[]): (it: Iterable<T>) => Iterable<T>;

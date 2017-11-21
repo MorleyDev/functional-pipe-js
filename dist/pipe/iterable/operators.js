@@ -13,6 +13,17 @@
         return yield* iterable;
     }
     exports.unit = unit;
+    function tap(tapper) {
+        return function* (it) {
+            let index = 0;
+            for (const value of it) {
+                tapper(value, index);
+                yield value;
+                index = index + 1;
+            }
+        };
+    }
+    exports.tap = tap;
     function map(mapper) {
         return function* (iterable) {
             let index = 0;
@@ -127,6 +138,13 @@
         return last;
     }
     exports.last = last;
+    function first(iterable) {
+        for (const item of iterable) {
+            return item;
+        }
+        return undefined;
+    }
+    exports.first = first;
     function skip(count) {
         return function* (iterable) {
             let i = 0;
