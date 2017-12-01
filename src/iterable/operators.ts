@@ -94,37 +94,12 @@ export function take(count: number): <T>(iterable: Iterable<T>) => Iterable<T> {
 	};
 }
 
-export function takeWhile<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
-	return function* (iterable) {
-		let i = 0;
-		for (const item of iterable) {
-			if (!predicate(item, i)) {
-				return;
-			}
-			yield item;
-			i = i + 1;
-		}
-	};
-}
-export function takeUntil<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
-	return function* (iterable) {
-		let i = 0;
-		for (const item of iterable) {
-			if (predicate(item, i)) {
-				return;
-			}
-			yield item;
-			i = i + 1;
-		}
-	};
-}
-
 export function last<T>(iterable: Iterable<T>): T | undefined {
-		let last: T | undefined = undefined;
-		for (const item of iterable) {
-			last = item;
-		}
-		return last;
+	let last: T | undefined = undefined;
+	for (const item of iterable) {
+		last = item;
+	}
+	return last;
 }
 
 export function first<T>(iterable: Iterable<T>): T | undefined {
@@ -139,8 +114,34 @@ export function skip(count: number): <T>(iterable: Iterable<T>) => Iterable<T> {
 		let i = 0;
 		for (const item of iterable) {
 			if (i >= count) {
-				yield* iterable;
+				yield item;
 			}
+			i = i + 1;
+		}
+	};
+}
+
+export function takeWhile<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
+	return function* (iterable) {
+		let i = 0;
+		for (const item of iterable) {
+			if (!predicate(item, i)) {
+				break;
+			}
+			yield item;
+			i = i + 1;
+		}
+	};
+}
+
+export function takeUntil<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
+	return function* (iterable) {
+		let i = 0;
+		for (const item of iterable) {
+			if (predicate(item, i)) {
+				return;
+			}
+			yield item;
 			i = i + 1;
 		}
 	};
@@ -149,11 +150,35 @@ export function skip(count: number): <T>(iterable: Iterable<T>) => Iterable<T> {
 export function skipWhile<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
 	return function* (iterable) {
 		let i = 0;
+		let canReturn = false;
 		for (const item of iterable) {
-			if (!predicate(item, i)) {
-				return yield* iterable;
+			if (!canReturn) {
+				canReturn = !predicate(item, i);
+				if (canReturn) {
+					yield item;
+				}
+				i = i + 1;
+			} else {
+				yield item;
 			}
-			i = i + 1;
+		}
+	};
+}
+
+export function skipUntil<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T> {
+	return function* (iterable) {
+		let i = 0;
+		let canReturn = false;
+		for (const item of iterable) {
+			if (!canReturn) {
+				canReturn = predicate(item, i);
+				if (canReturn) {
+					yield item;
+				}
+				i = i + 1;
+			} else {
+				yield item;
+			}
 		}
 	};
 }
@@ -174,7 +199,7 @@ export function push<T>(...next: T[]): (it: Iterable<T>) => Iterable<T> {
 
 export function unshift<T>(...next: T[]): (it: Iterable<T>) => Iterable<T> {
 	return function* (it) {
-		for (const iterable of next) yield iterable;
+		for (let i = 0; i < next.length; ++i) yield next[next.length - i - 1];
 		yield* it;
 	};
 }

@@ -66,7 +66,7 @@ test("iterable/generators", test => {
 		test.end();
 	});
 
-	test.test("concat :: (Iterable<T>, Iterable<T>, Iterable<T>) -> Iterable<T>", test => {
+	test.test("concat :: (Iterable[T], Iterable[T], Iterable[T]) -> Iterable[T]", test => {
 		const result = Array.from(Generators.concat([0, 3, 1, 2], [9, 5, 1], [5, 5, 5]));
 		test.deepEqual(result, [0, 3, 1, 2, 9, 5, 1, 5, 5, 5]);
 		test.end();

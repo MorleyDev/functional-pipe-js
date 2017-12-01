@@ -95,32 +95,6 @@ function take(count) {
     };
 }
 exports.take = take;
-function takeWhile(predicate) {
-    return function* (iterable) {
-        let i = 0;
-        for (const item of iterable) {
-            if (!predicate(item, i)) {
-                return;
-            }
-            yield item;
-            i = i + 1;
-        }
-    };
-}
-exports.takeWhile = takeWhile;
-function takeUntil(predicate) {
-    return function* (iterable) {
-        let i = 0;
-        for (const item of iterable) {
-            if (predicate(item, i)) {
-                return;
-            }
-            yield item;
-            i = i + 1;
-        }
-    };
-}
-exports.takeUntil = takeUntil;
 function last(iterable) {
     let last = undefined;
     for (const item of iterable) {
@@ -141,25 +115,77 @@ function skip(count) {
         let i = 0;
         for (const item of iterable) {
             if (i >= count) {
-                yield* iterable;
+                yield item;
             }
             i = i + 1;
         }
     };
 }
 exports.skip = skip;
-function skipWhile(predicate) {
+function takeWhile(predicate) {
     return function* (iterable) {
         let i = 0;
         for (const item of iterable) {
             if (!predicate(item, i)) {
-                return yield* iterable;
+                break;
             }
+            yield item;
             i = i + 1;
         }
     };
 }
+exports.takeWhile = takeWhile;
+function takeUntil(predicate) {
+    return function* (iterable) {
+        let i = 0;
+        for (const item of iterable) {
+            if (predicate(item, i)) {
+                return;
+            }
+            yield item;
+            i = i + 1;
+        }
+    };
+}
+exports.takeUntil = takeUntil;
+function skipWhile(predicate) {
+    return function* (iterable) {
+        let i = 0;
+        let canReturn = false;
+        for (const item of iterable) {
+            if (!canReturn) {
+                canReturn = !predicate(item, i);
+                if (canReturn) {
+                    yield item;
+                }
+                i = i + 1;
+            }
+            else {
+                yield item;
+            }
+        }
+    };
+}
 exports.skipWhile = skipWhile;
+function skipUntil(predicate) {
+    return function* (iterable) {
+        let i = 0;
+        let canReturn = false;
+        for (const item of iterable) {
+            if (!canReturn) {
+                canReturn = predicate(item, i);
+                if (canReturn) {
+                    yield item;
+                }
+                i = i + 1;
+            }
+            else {
+                yield item;
+            }
+        }
+    };
+}
+exports.skipUntil = skipUntil;
 function concat(...iterables) {
     return function* (it) {
         yield* it;
@@ -178,8 +204,8 @@ function push(...next) {
 exports.push = push;
 function unshift(...next) {
     return function* (it) {
-        for (const iterable of next)
-            yield iterable;
+        for (let i = 0; i < next.length; ++i)
+            yield next[next.length - i - 1];
         yield* it;
     };
 }
