@@ -236,4 +236,14 @@ function every(predicate) {
     };
 }
 exports.every = every;
+function* distinct(it) {
+    const resultSet = new Set();
+    for (const item of it) {
+        if (!resultSet.has(item)) {
+            resultSet.add(item);
+            yield item;
+        }
+    }
+}
+exports.distinct = distinct;
 //# sourceMappingURL=operators.js.map

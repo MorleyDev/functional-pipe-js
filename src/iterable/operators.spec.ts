@@ -133,6 +133,11 @@ test("iterable/operators", test => {
 		test.deepEqual(Array.from(result), [5, 4, 3, 2, 1, 10, 11, 12]);
 		test.end();
 	});
+	test.test("unshift :: () -> Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.unshift()([10, 11, 12]);
+		test.deepEqual(Array.from(result), [10, 11, 12]);
+		test.end();
+	});
 	test.test("some :: ((T, Number) -> Boolean) -> Iterable[T] -> Boolean", test => {
 		const trueResult = Operators.some((x: number, i) => x + i === 10)([1, 9, 3, 2]);
 		const falseResult = Operators.some((x: number, i) => x + i === 10)([1, 8, 3, 2]);
@@ -147,6 +152,12 @@ test("iterable/operators", test => {
 		test.true(trueResult);
 		test.false(falseResult1);
 		test.false(falseResult2);
+		test.end();
+	});
+
+	test.test("distinct :: Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.distinct([1, 2, 3, 4, 6, 3, 1, 2, 4, 9, 8]);
+		test.deepEqual(Array.from(result), [1, 2, 3, 4, 6, 9, 8]);
 		test.end();
 	});
 

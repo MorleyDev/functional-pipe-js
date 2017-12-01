@@ -19,3 +19,4 @@ export declare function push<T>(...next: T[]): (it: Iterable<T>) => Iterable<T>;
 export declare function unshift<T>(...next: T[]): (it: Iterable<T>) => Iterable<T>;
 export declare function some<T>(predicate: (item: T, index: number) => boolean): (it: Iterable<T>) => boolean;
 export declare function every<T>(predicate: (item: T, index: number) => boolean): (it: Iterable<T>) => boolean;
+export declare function distinct<T>(it: Iterable<T>): Iterable<T>;

@@ -229,3 +229,13 @@ export function every<T>(predicate: (item: T, index: number) => boolean): (it: I
 		return true;
 	};
 }
+
+export function* distinct<T>(it: Iterable<T>): Iterable<T> {
+	const resultSet = new Set<T>();
+	for (const item of it) {
+		if (!resultSet.has(item)) {
+			resultSet.add(item);
+			yield item;
+		}
+	}
+}
