@@ -26,4 +26,10 @@ function* keys(item) {
     }
 }
 exports.keys = keys;
+function* values(item) {
+    for (const key in item) {
+        yield item[key];
+    }
+}
+exports.values = values;
 //# sourceMappingURL=generators.js.map

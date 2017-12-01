@@ -23,3 +23,10 @@ export function* keys<T>(item: T): Iterable<string> {
 		yield key;
 	}
 }
+
+
+export function* values<T>(item: T): Iterable<T[keyof T]> {
+	for (const key in item) {
+		yield item[key];
+	}
+}

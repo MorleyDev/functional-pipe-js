@@ -1,11 +1,18 @@
 {
   "name": "@morleydev/functional-pipe",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc -p ."
+    "compile": "tsc -p .",
+    "test": "node ./dist/test.js"
   },
+  "files": [
+    "**/*.d.ts",
+    "**/*.js",
+    "!**/*.spec.js",
+    "!**/*.spec.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MorleyDev/functional-pipe-js.git"
@@ -17,6 +24,8 @@
   },
   "homepage": "https://github.com/MorleyDev/functional-pipe-js#readme",
   "devDependencies": {
-    "typescript": "2.6.1"
+    "@types/node": "8.0.53",
+    "typescript": "2.6.2",
+    "tap": "11.0.0"
   }
 }

@@ -12,6 +12,5 @@ const values = $$(Generators.infinite())
 	.$(Iterables.map(x => x ** 2))
 	.$(Iterables.take(5))
 	.$(Iterables.tap(value => console.log(value)))
-	.$(Array.from)
-	.$$();
+	.$$(Array.from);
 ```
