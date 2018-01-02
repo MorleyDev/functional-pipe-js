@@ -246,4 +246,30 @@ function* distinct(it) {
     }
 }
 exports.distinct = distinct;
+const defaultKeySelector = (item, index) => item;
+const defaultComparison = (a, b) => {
+    if (a < b) {
+        return -1;
+    }
+    else if (a > b) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+};
+function orderBy(keySelector, comparison) {
+    const trueKeySelector = keySelector || defaultKeySelector;
+    const trueComparison = comparison || defaultComparison;
+    return function* (item) {
+        const keyedMapper = map((item, index) => ({ item, key: trueKeySelector(item, index) }));
+        const keyed = keyedMapper(item);
+        const keyedArray = Array.from(keyed);
+        keyedArray.sort((a, b) => trueComparison(a.key, b.key));
+        for (const { item } of keyedArray) {
+            yield item;
+        }
+    };
+}
+exports.orderBy = orderBy;
 //# sourceMappingURL=operators.js.map

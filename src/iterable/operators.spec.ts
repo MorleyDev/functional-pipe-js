@@ -161,5 +161,21 @@ test("iterable/operators", test => {
 		test.end();
 	});
 
+	test.test("orderBy :: () -> Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.orderBy()([1, 8, 2, 4, 3, 2]);
+		test.deepEqual(Array.from(result), [1, 2, 2, 3, 4, 8]);
+		test.end();
+	});
+	test.test("orderBy :: (String -> Number, (Number, Number) -> Number) -> Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.orderBy((a: string) => parseInt(a.substr(1, 1), 10))(["11", "28", "52", "85", "94", "13"]);
+		test.deepEqual(Array.from(result), ["11", "52", "13", "94", "85", "28"]);
+		test.end();
+	});
+	test.test("orderBy :: (Number -> String, (String, Number) -> Number) -> Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.orderBy((a: number) => a.toString(), (a: string, b: string) => parseInt(b, 10) - parseInt(a, 10))([11, 38, 52, 84, 93, 22]);
+		test.deepEqual(Array.from(result), ["93", "84", "52", "38", "22", "11"]);
+		test.end();
+	});
+
 	test.end();
 });

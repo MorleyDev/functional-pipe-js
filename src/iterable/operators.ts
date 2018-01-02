@@ -239,3 +239,29 @@ export function* distinct<T>(it: Iterable<T>): Iterable<T> {
 		}
 	}
 }
+
+const defaultKeySelector = (item: any, index: number) => item;
+const defaultComparison = (a: any, b: any) => {
+	if (a < b) {
+		return -1;
+	} else if (a > b) {
+		return 1;
+	} else {
+		return 0;
+	}
+};
+
+export function orderBy<T, U = T>(keySelector?: (item: T, index: number) => U, comparison?: (a: U, b: U) => number): ((item: Iterable<T>) => Iterable<T>) {
+	const trueKeySelector: (item: any, index: number) => any = keySelector || defaultKeySelector;
+	const trueComparison: (a: any, b: any) => number = comparison || defaultComparison;
+
+	return function* (item: Iterable<T>): Iterable<T> {
+		const keyedMapper = map((item: T, index: number) => ({ item, key: trueKeySelector(item, index) }));
+		const keyed = keyedMapper(item);
+		const keyedArray = Array.from(keyed);
+		keyedArray.sort((a, b) => trueComparison(a.key, b.key));
+		for (const { item } of keyedArray) {
+			yield item;
+		}
+	};
+}
