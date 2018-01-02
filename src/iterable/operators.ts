@@ -265,3 +265,7 @@ export function orderBy<T, U = T>(keySelector?: (item: T, index: number) => U, c
 		}
 	};
 }
+
+export function flip<T>(it: Iterable<T>): Iterable<T> {
+	return reduce((prev: T[], next: T) => [next].concat(prev), [])(it);
+}

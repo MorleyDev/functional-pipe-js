@@ -272,4 +272,8 @@ function orderBy(keySelector, comparison) {
     };
 }
 exports.orderBy = orderBy;
+function flip(it) {
+    return reduce((prev, next) => [next].concat(prev), [])(it);
+}
+exports.flip = flip;
 //# sourceMappingURL=operators.js.map

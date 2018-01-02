@@ -21,3 +21,4 @@ export declare function some<T>(predicate: (item: T, index: number) => boolean):
 export declare function every<T>(predicate: (item: T, index: number) => boolean): (it: Iterable<T>) => boolean;
 export declare function distinct<T>(it: Iterable<T>): Iterable<T>;
 export declare function orderBy<T, U = T>(keySelector?: (item: T, index: number) => U, comparison?: (a: U, b: U) => number): ((item: Iterable<T>) => Iterable<T>);
+export declare function flip<T>(it: Iterable<T>): Iterable<T>;

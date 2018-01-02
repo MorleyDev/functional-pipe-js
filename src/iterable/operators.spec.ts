@@ -176,6 +176,11 @@ test("iterable/operators", test => {
 		test.deepEqual(Array.from(result), ["93", "84", "52", "38", "22", "11"]);
 		test.end();
 	});
+	test.test("flip :: Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.flip(["a", "pii", "piano", "a", "pii", "piano"]);
+		test.deepEqual(Array.from(result), ["piano", "pii", "a", "piano", "pii", "a"]);
+		test.end();
+	});
 
 	test.end();
 });
