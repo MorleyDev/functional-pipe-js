@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/** Yield the original sequence unmodified */
 function* unit(iterable) {
     return yield* iterable;
 }
 exports.unit = unit;
+/** Yield the original sequence unmodified, calling the tapper on every item in the sequence */
 function tap(tapper) {
     return function* (it) {
         let index = 0;
@@ -15,6 +17,7 @@ function tap(tapper) {
     };
 }
 exports.tap = tap;
+/** Yield a new iterable sequence that applies the mapper to every item in the original */
 function map(mapper) {
     return function* (iterable) {
         let index = 0;
@@ -25,6 +28,7 @@ function map(mapper) {
     };
 }
 exports.map = map;
+/** Yield all items in every iterable returned by the mapper when applied to every item in the source iterable */
 function flatMap(mapper) {
     return function* (iterable) {
         let index = 0;
@@ -38,6 +42,7 @@ function flatMap(mapper) {
     };
 }
 exports.flatMap = flatMap;
+/** Yield only the items in an iterable sequence that match the predicate */
 function filter(predicate) {
     return function* (iterable) {
         let index = 0;
@@ -50,6 +55,7 @@ function filter(predicate) {
     };
 }
 exports.filter = filter;
+/** Reduce the items in an iterable down to a single instance of initial type, returning the final result result of the reduction */
 function reduce(predicate, initial) {
     return function (iterable) {
         let index = 0;
@@ -62,6 +68,7 @@ function reduce(predicate, initial) {
     };
 }
 exports.reduce = reduce;
+/** Reduce the items in an iterable down to a single instance of initial type, yielding each step of the reduction */
 function scan(predicate, initial) {
     return function* (iterable) {
         let index = 0;
@@ -75,6 +82,7 @@ function scan(predicate, initial) {
     };
 }
 exports.scan = scan;
+/** Reduce the items in an iterable down to a single instance of the same type as the type contained by that Iterable */
 function fold(predicate) {
     return function (iterable) {
         const [head, ...tail] = Array.from(iterable);
@@ -82,6 +90,7 @@ function fold(predicate) {
     };
 }
 exports.fold = fold;
+/** Take and yield the first N items in an iterable sequence */
 function take(count) {
     return function* (iterable) {
         let i = 0;
@@ -95,6 +104,7 @@ function take(count) {
     };
 }
 exports.take = take;
+/** Take only the last item in an iterable sequence */
 function last(iterable) {
     let last = undefined;
     for (const item of iterable) {
@@ -103,6 +113,7 @@ function last(iterable) {
     return last;
 }
 exports.last = last;
+/** Take only the first item in an iterable sequence */
 function first(iterable) {
     for (const item of iterable) {
         return item;
@@ -110,6 +121,7 @@ function first(iterable) {
     return undefined;
 }
 exports.first = first;
+/** Skip the first N items in a iterable sequence, and then yield the remaining items */
 function skip(count) {
     return function* (iterable) {
         let i = 0;
@@ -122,6 +134,7 @@ function skip(count) {
     };
 }
 exports.skip = skip;
+/** Take and yield items in an iterable until the passed predicate fails, then abort the sequence */
 function takeWhile(predicate) {
     return function* (iterable) {
         let i = 0;
@@ -135,6 +148,7 @@ function takeWhile(predicate) {
     };
 }
 exports.takeWhile = takeWhile;
+/** Take and yield items in an iterable until the passed predicate passes, then abort the sequence */
 function takeUntil(predicate) {
     return function* (iterable) {
         let i = 0;
@@ -148,6 +162,7 @@ function takeUntil(predicate) {
     };
 }
 exports.takeUntil = takeUntil;
+/** Skip items in an iterable until the passed predicate fails, then yioeld all items in the iterable */
 function skipWhile(predicate) {
     return function* (iterable) {
         let i = 0;
@@ -167,6 +182,7 @@ function skipWhile(predicate) {
     };
 }
 exports.skipWhile = skipWhile;
+/** Skip items in an iterable until the passed predicate matches, then yioeld all items in the iterable */
 function skipUntil(predicate) {
     return function* (iterable) {
         let i = 0;
@@ -186,6 +202,7 @@ function skipUntil(predicate) {
     };
 }
 exports.skipUntil = skipUntil;
+/** Yields the passed iterables at the end of the current iterable */
 function concat(...iterables) {
     return function* (it) {
         yield* it;
@@ -194,6 +211,7 @@ function concat(...iterables) {
     };
 }
 exports.concat = concat;
+/** Append an item to the end of an iterable */
 function push(...next) {
     return function* (it) {
         yield* it;
@@ -202,6 +220,7 @@ function push(...next) {
     };
 }
 exports.push = push;
+/** Prepend an item to the beginning of an iterable */
 function unshift(...next) {
     return function* (it) {
         for (let i = 0; i < next.length; ++i)
@@ -210,6 +229,7 @@ function unshift(...next) {
     };
 }
 exports.unshift = unshift;
+/** True if at least one item in a sequence matches the given predicate */
 function some(predicate) {
     return it => {
         let i = 0;
@@ -223,6 +243,7 @@ function some(predicate) {
     };
 }
 exports.some = some;
+/** True if every item in a sequence matches the given predicate */
 function every(predicate) {
     return it => {
         let i = 0;
@@ -236,6 +257,7 @@ function every(predicate) {
     };
 }
 exports.every = every;
+/** Play unique items from a set */
 function* distinct(it) {
     const resultSet = new Set();
     for (const item of it) {
@@ -258,6 +280,7 @@ const defaultComparison = (a, b) => {
         return 0;
     }
 };
+/** Play the given Iterable ordered by a given key or itself */
 function orderBy(keySelector, comparison) {
     const trueKeySelector = keySelector || defaultKeySelector;
     const trueComparison = comparison || defaultComparison;
@@ -272,10 +295,12 @@ function orderBy(keySelector, comparison) {
     };
 }
 exports.orderBy = orderBy;
+/** Play the given Iterable in reverse order */
 function flip(it) {
     return reduce((prev, next) => [next].concat(prev), [])(it);
 }
 exports.flip = flip;
+/** Play the given Iterable, and then it N more times */
 function repeat(times) {
     return function* (it) {
         const buffer = [];
@@ -289,6 +314,7 @@ function repeat(times) {
     };
 }
 exports.repeat = repeat;
+/** Play the given Iterable, and then play back that Iterable in reverse */
 function* doppler(it) {
     const buffer = [];
     for (const item of it) {
