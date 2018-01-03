@@ -276,4 +276,17 @@ function flip(it) {
     return reduce((prev, next) => [next].concat(prev), [])(it);
 }
 exports.flip = flip;
+function repeat(times) {
+    return function* (it) {
+        const buffer = [];
+        for (const item of it) {
+            buffer.push(item);
+            yield item;
+        }
+        for (let i = 0; i < times; ++i) {
+            yield* buffer;
+        }
+    };
+}
+exports.repeat = repeat;
 //# sourceMappingURL=operators.js.map

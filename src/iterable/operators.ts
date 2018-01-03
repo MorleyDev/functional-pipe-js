@@ -269,3 +269,16 @@ export function orderBy<T, U = T>(keySelector?: (item: T, index: number) => U, c
 export function flip<T>(it: Iterable<T>): Iterable<T> {
 	return reduce((prev: T[], next: T) => [next].concat(prev), [])(it);
 }
+
+export function repeat<T>(times: number): (it: Iterable<T>) => Iterable<T> {
+	return function* (it) {
+		const buffer: T[] = [];
+		for (const item of it) {
+			buffer.push(item);
+			yield item;
+		}
+		for (let i = 0; i < times; ++i) {
+			yield* buffer;
+		}
+	};
+}

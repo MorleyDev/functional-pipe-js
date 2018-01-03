@@ -175,6 +175,11 @@ tap_1.test("iterable/operators", test => {
         test.deepEqual(Array.from(result), ["piano", "pii", "a", "piano", "pii", "a"]);
         test.end();
     });
+    test.test("reverse :: Number -> Iterable[T] -> Iterable[T]", test => {
+        const result = Operators.repeat(4)(["a", 2, 3]);
+        test.deepEqual(Array.from(result), ["a", 2, 3, "a", 2, 3, "a", 2, 3, "a", 2, 3, "a", 2, 3]);
+        test.end();
+    });
     test.end();
 });
 //# sourceMappingURL=operators.spec.js.map
