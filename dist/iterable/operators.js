@@ -289,4 +289,14 @@ function repeat(times) {
     };
 }
 exports.repeat = repeat;
+function* doppler(it) {
+    const buffer = [];
+    for (const item of it) {
+        buffer.push(item);
+        yield item;
+    }
+    buffer.reverse();
+    yield* buffer;
+}
+exports.doppler = doppler;
 //# sourceMappingURL=operators.js.map

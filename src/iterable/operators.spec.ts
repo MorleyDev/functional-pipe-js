@@ -186,6 +186,12 @@ test("iterable/operators", test => {
 		test.deepEqual(Array.from(result), ["a", 2, 3, "a", 2, 3, "a", 2, 3, "a", 2, 3, "a", 2, 3]);
 		test.end();
 	});
+	test.test("doppler :: Iterable[T] -> Iterable[T]", test => {
+		const result = Operators.doppler(["a", 2, 3]);
+		test.deepEqual(Array.from(result), ["a", 2, 3, 3, 2, "a"]);
+		test.end();
+	});
+
 
 	test.end();
 });

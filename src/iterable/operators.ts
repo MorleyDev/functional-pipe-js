@@ -282,3 +282,13 @@ export function repeat<T>(times: number): (it: Iterable<T>) => Iterable<T> {
 		}
 	};
 }
+
+export function* doppler<T>(it: Iterable<T>): Iterable<T> {
+	const buffer: T[] = [];
+	for (const item of it) {
+		buffer.push(item);
+		yield item;
+	}
+	buffer.reverse();
+	yield* buffer;
+}
