@@ -50,3 +50,5 @@ export declare function flip<T>(it: Iterable<T>): Iterable<T>;
 export declare function repeat<T>(times: number): (it: Iterable<T>) => Iterable<T>;
 /** Play the given Iterable, and then play back that Iterable in reverse */
 export declare function doppler<T>(it: Iterable<T>): Iterable<T>;
+/** Play the given Iterable in a random order */
+export declare function shuffle<T>(it: Iterable<T>, rand?: () => number): Iterable<T>;

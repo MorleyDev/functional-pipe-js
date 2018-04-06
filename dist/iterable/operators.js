@@ -325,4 +325,9 @@ function* doppler(it) {
     yield* buffer;
 }
 exports.doppler = doppler;
+/** Play the given Iterable in a random order */
+function shuffle(it, rand = () => Math.random()) {
+    return map((x) => x[0])(orderBy((x) => x[1])(map((x) => [x, rand()])(it)));
+}
+exports.shuffle = shuffle;
 //# sourceMappingURL=operators.js.map

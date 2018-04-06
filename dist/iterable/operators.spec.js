@@ -185,6 +185,12 @@ tap_1.test("iterable/operators", test => {
         test.deepEqual(Array.from(result), ["a", 2, 3, 3, 2, "a"]);
         test.end();
     });
+    test.test("shuffle :: Iterable[T] -> Iterable[T]", test => {
+        const newOrder = [3, 1, 2, 4];
+        const result = Operators.shuffle(["a", 2, 3, "c"], () => newOrder.shift() || 0);
+        test.equivalent(Array.from(result), [2, 3, "a", "c"]);
+        test.end();
+    });
     test.end();
 });
 //# sourceMappingURL=operators.spec.js.map

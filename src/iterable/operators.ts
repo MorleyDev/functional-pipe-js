@@ -315,3 +315,8 @@ export function* doppler<T>(it: Iterable<T>): Iterable<T> {
 	buffer.reverse();
 	yield* buffer;
 }
+
+/** Play the given Iterable in a random order */
+export function shuffle<T>(it: Iterable<T>, rand = () => Math.random()): Iterable<T> {
+	return map((x: [T, number]) => x[0])(orderBy((x: [T, number]) => x[1])(map((x: T) => [x, rand()] as [T, number])(it)))
+}
