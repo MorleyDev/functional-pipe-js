@@ -104,6 +104,34 @@ function take(count) {
     };
 }
 exports.take = take;
+/** Take only the last N items in an iterable sequence */
+function takeLast(count) {
+    return function* (iterable) {
+        const buffer = [];
+        for (const item of iterable) {
+            buffer.push(item);
+            if (buffer.length > count) {
+                buffer.shift();
+            }
+        }
+        return yield* buffer;
+    };
+}
+exports.takeLast = takeLast;
+/** Take everything but the last N items in an iterable sequence */
+function skipLast(count) {
+    return function* (iterable) {
+        const buffer = [];
+        for (const item of iterable) {
+            buffer.push(item);
+        }
+        if (buffer.length < count) {
+            return;
+        }
+        yield* buffer.slice(0, buffer.length - count);
+    };
+}
+exports.skipLast = skipLast;
 /** Take only the last item in an iterable sequence */
 function last(iterable) {
     let last = undefined;

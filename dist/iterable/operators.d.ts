@@ -16,6 +16,10 @@ export declare function scan<T, U>(predicate: (prev: U, next: T, index: number) 
 export declare function fold<T>(predicate: (prev: T, next: T, index: number) => T): (it: Iterable<T>) => T;
 /** Take and yield the first N items in an iterable sequence */
 export declare function take(count: number): <T>(iterable: Iterable<T>) => Iterable<T>;
+/** Take only the last N items in an iterable sequence */
+export declare function takeLast(count: number): <T>(iterable: Iterable<T>) => Iterable<T>;
+/** Take everything but the last N items in an iterable sequence */
+export declare function skipLast(count: number): <T>(iterable: Iterable<T>) => Iterable<T>;
 /** Take only the last item in an iterable sequence */
 export declare function last<T>(iterable: Iterable<T>): T | undefined;
 /** Take only the first item in an iterable sequence */

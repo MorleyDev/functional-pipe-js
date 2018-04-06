@@ -103,6 +103,34 @@ export function take(count: number): <T>(iterable: Iterable<T>) => Iterable<T> {
 	};
 }
 
+/** Take only the last N items in an iterable sequence */
+export function takeLast(count: number) {
+	return function* <T>(iterable: Iterable<T>): Iterable<T> {
+		const buffer: T[] = [];
+		for (const item of iterable) {
+			buffer.push(item);
+			if (buffer.length > count) {
+				buffer.shift();
+			}
+		}
+		return yield* buffer;
+	};
+}
+
+/** Take everything but the last N items in an iterable sequence */
+export function skipLast(count: number) {
+	return function* <T>(iterable: Iterable<T>): Iterable<T> {
+		const buffer: T[] = [];
+		for (const item of iterable) {
+			buffer.push(item);
+		}
+		if (buffer.length < count) {
+			return;
+		}
+		yield* buffer.slice(0, buffer.length - count);
+	};
+}
+
 /** Take only the last item in an iterable sequence */
 export function last<T>(iterable: Iterable<T>): T | undefined {
 	let last: T | undefined = undefined;

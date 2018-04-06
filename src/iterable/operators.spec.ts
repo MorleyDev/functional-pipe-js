@@ -191,14 +191,51 @@ test("iterable/operators", test => {
 		test.deepEqual(Array.from(result), ["a", 2, 3, 3, 2, "a"]);
 		test.end();
 	});
-	
+
 	test.test("shuffle :: Iterable[T] -> Iterable[T]", test => {
 		const newOrder = [3, 1, 2, 4];
 		const result = Operators.shuffle(["a", 2, 3, "c"], () => newOrder.shift() || 0);
-		test.equivalent(Array.from(result), [2, 3, "a", "c"]);
+		test.deepEqual(Array.from(result), [2, 3, "a", "c"]);
 		test.end();
 	});
 
+	test.test("takeLast :: Number -> Iterable[T] -> Iterable[T]", test => {
+		test.test("takeLast :: 3 -> Iterable[T], N > 3 -> Iterable[T]", test => {
+			const result = Operators.takeLast(3)(["a", "b", "c", "d", "e"]);
+			test.deepEqual(Array.from(result), ["c", "d", "e"]);
+			test.end();
+		});
+		test.test("takeLast :: 3 -> Iterable[T], N == 3 -> Iterable[T]", test => {
+			const result = Operators.takeLast(3)(["c", "d", "e"]);
+			test.deepEqual(Array.from(result), ["c", "d", "e"]);
+			test.end();
+		});
+		test.test("takeLast :: 3 -> Iterable[T], N < 3 -> Iterable[T]", test => {
+			const result = Operators.takeLast(3)(["d", "e"]);
+			test.deepEqual(Array.from(result), ["d", "e"]);
+			test.end();
+		});
+		test.end();
+	});
+	
+	test.test("skipLast :: Number -> Iterable[T] -> Iterable[T]", test => {
+		test.test("skipLast :: 3 -> Iterable[T], N > 3 -> Iterable[T]", test => {
+			const result = Operators.skipLast(3)(["a", "b", "c", "d", "e"]);
+			test.deepEqual(Array.from(result), ["a", "b"]);
+			test.end();
+		});
+		test.test("skipLast :: 3 -> Iterable[T], N == 3 -> Iterable[T]", test => {
+			const result = Operators.skipLast(3)(["c", "d", "e"]);
+			test.deepEqual(Array.from(result), []);
+			test.end();
+		});
+		test.test("skipLast :: 3 -> Iterable[T], N < 3 -> Iterable[T]", test => {
+			const result = Operators.skipLast(3)(["d", "e"]);
+			test.deepEqual(Array.from(result), []);
+			test.end();
+		});
+		test.end();
+	});
 
 	test.end();
 });
