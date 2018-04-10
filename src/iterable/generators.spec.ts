@@ -13,8 +13,8 @@ test("iterable/generators", test => {
 			test.equal(value, i);
 		}
 
-		const infiniteIterator2 = infinite[Symbol.iterator](); // ES6 iterables are horribly stateful
-		for (let i = 10; i < 20; ++i) {
+		const infiniteIterator2 = infinite[Symbol.iterator](); // ES6 iterable wrapper prevents state being stored
+		for (let i = 0; i < i; ++i) {
 			const { done, value } = infiniteIterator2.next();
 			test.false(done);
 			test.equal(value, i);
