@@ -58,3 +58,5 @@ export declare function repeat<T>(times: number): (it: Iterable<T>) => Iterable<
 export declare function doppler<T>(it: Iterable<T>): Iterable<T>;
 /** Play the given Iterable in a random order */
 export declare function shuffle<T>(it: Iterable<T>, rand?: () => number): Iterable<T>;
+/** Return the specified iterable if the source iterable is empty */
+export declare function or<T>(other: Iterable<T>): (source: Iterable<T>) => Iterable<T>;

@@ -255,6 +255,24 @@ tap_1.test("iterable/operators", test => {
         });
         test.end();
     });
+    test.test("or :: Iterable[T] -> Iterable[T] -> Iterable[T]", test => {
+        test.test("or :: L -> R -> R", test => {
+            const result = Operators.or([1, 2, 3])([4, 5, 6]);
+            test.deepEqual(Array.from(result), [4, 5, 6]);
+            test.end();
+        });
+        test.test("or :: L -> Empty -> L", test => {
+            const result = Operators.or([1, 2, 3])([]);
+            test.deepEqual(Array.from(result), [1, 2, 3]);
+            test.end();
+        });
+        test.test("or :: Empty -> Empty -> Empty", test => {
+            const result = Operators.or([])([]);
+            test.deepEqual(Array.from(result), []);
+            test.end();
+        });
+        test.end();
+    });
     test.end();
 });
 //# sourceMappingURL=operators.spec.js.map

@@ -1,6 +1,6 @@
 # Functional Pipe JS
 
-A ponyfill for the proposed Pipeline operator |> alongside utility Iterable mapreduce operations.
+A ponyfill for the proposed Pipeline operator |> alongside utility Iterable mapreduce operations and a Maybe Monad that has pipeable operators.
 
 Example usage:
 

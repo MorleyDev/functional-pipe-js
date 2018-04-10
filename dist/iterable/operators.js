@@ -372,4 +372,18 @@ function shuffle(it, rand = () => Math.random()) {
     return map((x) => x[0])(orderBy((x) => x[1])(map((x) => [x, rand()])(it)));
 }
 exports.shuffle = shuffle;
+/** Return the specified iterable if the source iterable is empty */
+function or(other) {
+    return function* (source) {
+        let hasYieldedItem = false;
+        for (const item of source) {
+            yield item;
+            hasYieldedItem = true;
+        }
+        if (!hasYieldedItem) {
+            yield* other;
+        }
+    };
+}
+exports.or = or;
 //# sourceMappingURL=operators.js.map

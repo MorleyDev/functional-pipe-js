@@ -363,3 +363,17 @@ export function* doppler<T>(it: Iterable<T>): Iterable<T> {
 export function shuffle<T>(it: Iterable<T>, rand = () => Math.random()): Iterable<T> {
 	return map((x: [T, number]) => x[0])(orderBy((x: [T, number]) => x[1])(map((x: T) => [x, rand()] as [T, number])(it)))
 }
+
+/** Return the specified iterable if the source iterable is empty */
+export function or<T>(other: Iterable<T>): (source: Iterable<T>) => Iterable<T> {
+	return function* (source) {
+		let hasYieldedItem = false;
+		for (const item of source) {
+			yield item;
+			hasYieldedItem = true;
+		}
+		if (!hasYieldedItem) {
+			yield* other;
+		}
+	};
+}
