@@ -386,6 +386,7 @@ function or(other) {
     };
 }
 exports.or = or;
+/** Evaluate the entire iterable to a readonly array. Provided as type deduction seems to fail when using Array.from to accomplish this outside of a lamda */
 function toArray(iterable) {
     return Array.from(iterable);
 }
