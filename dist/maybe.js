@@ -26,6 +26,7 @@ class MaybeImpl {
 }
 exports.just = (value) => new MaybeImpl(() => ({ hasValue: true, value }));
 exports.nothing = () => new MaybeImpl(() => ({ hasValue: false }));
+exports.infer = (value) => value != null ? exports.just(value) : exports.nothing();
 exports.defer = (defer) => {
     return new MaybeImpl(() => {
         for (const result of defer()) {

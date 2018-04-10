@@ -1,4 +1,6 @@
-export type Maybe<T> = { [Symbol.iterator](): Iterator<T> };
+export type Maybe<T> = {
+	[Symbol.iterator](): Iterator<T>;
+};
 
 class MaybeImpl<T> implements Iterable<T> {
 	constructor(private extract: () => ({ hasValue: false } | { hasValue: true; value: T })) {
@@ -28,6 +30,8 @@ class MaybeImpl<T> implements Iterable<T> {
 
 export const just = <T>(value: T): Maybe<T> => new MaybeImpl(() => ({ hasValue: true, value }));
 export const nothing = (): Maybe<any> => new MaybeImpl(() => ({ hasValue: false }));
+
+export const infer = <T>(value: T | null | undefined): Maybe<T> => value != null ? just(value) : nothing();
 
 export const defer = <T>(defer: () => Maybe<T>): Maybe<T> => {
 	return new MaybeImpl<T>(() => {
