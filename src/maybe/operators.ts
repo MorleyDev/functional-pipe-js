@@ -53,7 +53,7 @@ export function defaultIfEmpty<U>(defaultValue: U): <T>(maybe: Maybe<T>) => T | 
 /** Return true if the maybe is empty, else return false */
 export function isEmpty<T>(maybe: Maybe<T>): boolean {
 	for (const value of maybe) {
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
