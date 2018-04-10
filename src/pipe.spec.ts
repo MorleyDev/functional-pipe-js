@@ -11,3 +11,4 @@ test("pipe", test => {
 	test.equal(result, 25);
 	test.end();
 });
+

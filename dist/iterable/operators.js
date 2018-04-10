@@ -386,4 +386,8 @@ function or(other) {
     };
 }
 exports.or = or;
+function toArray(iterable) {
+    return Array.from(iterable);
+}
+exports.toArray = toArray;
 //# sourceMappingURL=operators.js.map

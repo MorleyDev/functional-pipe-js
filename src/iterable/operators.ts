@@ -377,3 +377,8 @@ export function or<T>(other: Iterable<T>): (source: Iterable<T>) => Iterable<T> 
 		}
 	};
 }
+
+/** Evaluate the entire iterable to a readonly array. Provided as type deduction seems to fail when using Array.from to accomplish this outside of a lamda */
+export function toArray<T>(iterable: Iterable<T>): ReadonlyArray<T> {
+	return Array.from(iterable);
+}

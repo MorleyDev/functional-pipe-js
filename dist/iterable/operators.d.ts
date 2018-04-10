@@ -60,3 +60,4 @@ export declare function doppler<T>(it: Iterable<T>): Iterable<T>;
 export declare function shuffle<T>(it: Iterable<T>, rand?: () => number): Iterable<T>;
 /** Return the specified iterable if the source iterable is empty */
 export declare function or<T>(other: Iterable<T>): (source: Iterable<T>) => Iterable<T>;
+export declare function toArray<T>(iterable: Iterable<T>): ReadonlyArray<T>;
