@@ -103,14 +103,14 @@ tap_1.test("maybe/operators", test => {
             test.end();
         });
         test.test("isEmpty :: Maybe T -> Boolean", test => {
-            test.test("isEmpty :: just T -> true", test => {
+            test.test("isEmpty :: just T -> false", test => {
                 const result = Maybes.isEmpty(maybe_1.just(10));
-                test.true(result);
+                test.false(result);
                 test.end();
             });
             test.test("isEmpty :: nothing -> true", test => {
                 const result = Maybes.isEmpty(maybe_1.nothing());
-                test.false(result);
+                test.true(result);
                 test.end();
             });
             test.end();

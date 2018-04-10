@@ -54,9 +54,9 @@ exports.defaultIfEmpty = defaultIfEmpty;
 /** Return true if the maybe is empty, else return false */
 function isEmpty(maybe) {
     for (const value of maybe) {
-        return true;
+        return false;
     }
-    return false;
+    return true;
 }
 exports.isEmpty = isEmpty;
 //# sourceMappingURL=operators.js.map
