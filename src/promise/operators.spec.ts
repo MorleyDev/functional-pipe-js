@@ -1,10 +1,10 @@
-import * as tap from "tap";
+import * as test from "tap";
 
 import { catchError, then } from "./operators";
 
 import { $$ } from "../pipe";
 
-tap.test("promise/operators", test => {
+test.test("promise/operators", test => {
 	test.test("then :: (T -> U) -> T -> Promise U", async test => {
 		const result = await $$(10).$$(then(x => x * 20));
 		test.equals(result, 200);

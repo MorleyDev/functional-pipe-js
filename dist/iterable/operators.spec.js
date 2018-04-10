@@ -94,6 +94,32 @@ tap_1.test("iterable/operators", test => {
         });
         test.end();
     });
+    test.test("first :: Iterable T -> (T | undefined)", test => {
+        test.test("first :: Iterable T -> T", test => {
+            const result = Operators.first([5, 10, 15]);
+            test.equal(5, result);
+            test.end();
+        });
+        test.test("first :: Iterable T -> undefined", test => {
+            const result = Operators.first([]);
+            test.equal(undefined, result);
+            test.end();
+        });
+        test.end();
+    });
+    test.test("last :: Iterable T -> (T | undefined)", test => {
+        test.test("last :: Iterable T -> T", test => {
+            const result = Operators.last([5, 10, 15]);
+            test.equal(15, result);
+            test.end();
+        });
+        test.test("last :: Iterable T -> undefined", test => {
+            const result = Operators.last([]);
+            test.equal(undefined, result);
+            test.end();
+        });
+        test.end();
+    });
     test.test("takeWhile :: ((T, Number) -> Boolean) -> Iterable T -> Iterable T", test => {
         const result = Operators.takeWhile((value, index) => value < 15 && index < 3)([10, 13, 15, 12, 18]);
         test.deepEqual(Array.from(result), [10, 13]);

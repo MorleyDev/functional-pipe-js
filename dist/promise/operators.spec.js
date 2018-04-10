@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tap = require("tap");
+const test = require("tap");
 const operators_1 = require("./operators");
 const pipe_1 = require("../pipe");
-tap.test("promise/operators", test => {
+test.test("promise/operators", test => {
     test.test("then :: (T -> U) -> T -> Promise U", async (test) => {
         const result = await pipe_1.$$(10).$$(operators_1.then(x => x * 20));
         test.equals(result, 200);
