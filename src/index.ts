@@ -8,8 +8,7 @@ import * as _Maybe from "./maybe";
 import { $$ } from "./pipe";
 
 export type Maybe<T> = _Maybe.Maybe<T>;
-
-const Maybe = {
+export const Maybe = {
 	..._Maybe,
 	...MaybeGenerators
 };
@@ -19,6 +18,5 @@ export {
 	Generators,
 	Promises,
 	Maybes,
-	Maybe,
 	$$
 };

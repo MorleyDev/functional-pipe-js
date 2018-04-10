@@ -5,7 +5,7 @@ import * as Promises from "./promise/operators";
 import * as _Maybe from "./maybe";
 import { $$ } from "./pipe";
 export declare type Maybe<T> = _Maybe.Maybe<T>;
-declare const Maybe: {
+export declare const Maybe: {
     find<T>(predicate: (value: T) => boolean): (it: Iterable<T>) => _Maybe.Maybe<T>;
     first<T>(it: Iterable<T>): _Maybe.Maybe<T>;
     last<T>(it: Iterable<T>): _Maybe.Maybe<T>;
@@ -15,4 +15,4 @@ declare const Maybe: {
     infer: <T>(value: T | null | undefined) => _Maybe.Maybe<T>;
     defer: <T>(defer: () => _Maybe.Maybe<T>) => _Maybe.Maybe<T>;
 };
-export { Iterables, Generators, Promises, Maybes, Maybe, $$ };
+export { Iterables, Generators, Promises, Maybes, $$ };
