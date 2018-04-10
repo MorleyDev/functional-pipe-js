@@ -230,6 +230,20 @@ function skipUntil(predicate) {
     };
 }
 exports.skipUntil = skipUntil;
+/** Enumerate until index and return the element at index, or consumes and return undefined */
+function elementAtOrDefault(index, or) {
+    return function (it) {
+        let i = 0;
+        for (const item of it) {
+            if (i === index) {
+                return item;
+            }
+            i = i + 1;
+        }
+        return or;
+    };
+}
+exports.elementAtOrDefault = elementAtOrDefault;
 /** Yields the passed iterables at the end of the current iterable */
 function concat(...iterables) {
     return function* (it) {

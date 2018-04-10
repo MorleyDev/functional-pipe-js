@@ -225,6 +225,21 @@ export function skipUntil<T>(predicate: (item: T, index: number) => boolean): (i
 		}
 	};
 }
+
+/** Enumerate until index and return the element at index, or consumes and return undefined */
+export function elementAtOrDefault<U>(index: number, or: U): <T>(it: Iterable<T>) => T | U {
+	return function (it) {
+		let i = 0;
+		for (const item of it) {
+			if (i === index) {
+				return item;
+			}
+			i = i + 1;
+		}
+		return or;
+	}
+}
+
 /** Yields the passed iterables at the end of the current iterable */
 export function concat<T>(...iterables: Iterable<T>[]): (it: Iterable<T>) => Iterable<T> {
 	return function* (it) {

@@ -175,7 +175,7 @@ tap_1.test("iterable/operators", test => {
         test.deepEqual(Array.from(result), ["piano", "pii", "a", "piano", "pii", "a"]);
         test.end();
     });
-    test.test("reverse :: Number -> Iterable[T] -> Iterable[T]", test => {
+    test.test("repeat :: Number -> Iterable[T] -> Iterable[T]", test => {
         const result = Operators.repeat(4)(["a", 2, 3]);
         test.deepEqual(Array.from(result), ["a", 2, 3, "a", 2, 3, "a", 2, 3, "a", 2, 3, "a", 2, 3]);
         test.end();
@@ -202,6 +202,11 @@ tap_1.test("iterable/operators", test => {
             test.deepEqual(Array.from(result), ["c", "d", "e"]);
             test.end();
         });
+        test.test("takeLast :: N < 0 -> Iterable[T] -> []", test => {
+            const result = Operators.takeLast(-1)(["c", "d", "e"]);
+            test.deepEqual(Array.from(result), []);
+            test.end();
+        });
         test.test("takeLast :: 3 -> Iterable[T], N < 3 -> Iterable[T]", test => {
             const result = Operators.takeLast(3)(["d", "e"]);
             test.deepEqual(Array.from(result), ["d", "e"]);
@@ -215,6 +220,11 @@ tap_1.test("iterable/operators", test => {
             test.deepEqual(Array.from(result), ["a", "b"]);
             test.end();
         });
+        test.test("skipLast :: N < 0 -> Iterable[T] -> Iterable[T]", test => {
+            const result = Operators.skipLast(-1)(["a", "b", "c", "d", "e"]);
+            test.deepEqual(Array.from(result), ["a", "b", "c", "d", "e"]);
+            test.end();
+        });
         test.test("skipLast :: 3 -> Iterable[T], N == 3 -> Iterable[T]", test => {
             const result = Operators.skipLast(3)(["c", "d", "e"]);
             test.deepEqual(Array.from(result), []);
@@ -223,6 +233,24 @@ tap_1.test("iterable/operators", test => {
         test.test("skipLast :: 3 -> Iterable[T], N < 3 -> Iterable[T]", test => {
             const result = Operators.skipLast(3)(["d", "e"]);
             test.deepEqual(Array.from(result), []);
+            test.end();
+        });
+        test.end();
+    });
+    test.test("elementAtOrDefault :: (N, U) -> Iterable[T] -> T | U", test => {
+        test.test("elementAtOrDefault :: (2, undefined) -> Iterable[T], N > 2 -> T", test => {
+            const result = Operators.elementAtOrDefault(2, undefined)(["a", "b", "c", "d"]);
+            test.equals(result, "c");
+            test.end();
+        });
+        test.test("elementAtOrDefault :: (5, 'other') -> Iterable[T], N < 5 -> 'other'", test => {
+            const result = Operators.elementAtOrDefault(5, "other")(["a", "b", "c"]);
+            test.equals(result, "other");
+            test.end();
+        });
+        test.test("elementAtOrDefault :: (N < 0, 'other') -> Iterable[T] -> 'other'", test => {
+            const result = Operators.elementAtOrDefault(-1, "other")(["a", "b", "c"]);
+            test.equals(result, "other");
             test.end();
         });
         test.end();

@@ -34,6 +34,8 @@ export declare function takeUntil<T>(predicate: (item: T, index: number) => bool
 export declare function skipWhile<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T>;
 /** Skip items in an iterable until the passed predicate matches, then yioeld all items in the iterable */
 export declare function skipUntil<T>(predicate: (item: T, index: number) => boolean): (iterable: Iterable<T>) => Iterable<T>;
+/** Enumerate until index and return the element at index, or consumes and return undefined */
+export declare function elementAtOrDefault<U>(index: number, or: U): <T>(it: Iterable<T>) => T | U;
 /** Yields the passed iterables at the end of the current iterable */
 export declare function concat<T>(...iterables: Iterable<T>[]): (it: Iterable<T>) => Iterable<T>;
 /** Append an item to the end of an iterable */
