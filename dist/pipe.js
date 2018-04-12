@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.$$ = (x) => ({
-    $: (map) => exports.$$(map(x)),
-    $$: (map) => map(x),
+    $: (map, ...extra) => exports.$$(map(x, ...extra)),
+    $$: (map, ...extra) => map(x, ...extra),
 });
+;
 //# sourceMappingURL=pipe.js.map

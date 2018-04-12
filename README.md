@@ -12,5 +12,12 @@ const values = $$(Generators.infinite())
 	.$(Iterables.map(x => x ** 2))
 	.$(Iterables.take(5))
 	.$(Iterables.tap(value => console.log(value)))
-	.$$(Array.from);
+	.$$(Iterables.toArray);
+
+// Loadash example using rhs application
+const values = $$(Generators.range(0, 10))
+	.$(Iterables.toArray)
+	.$(_.map, x => x + 5)
+	.$$(_.map, x => x * 2);
+
 ```
