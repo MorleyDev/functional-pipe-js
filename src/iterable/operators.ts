@@ -382,3 +382,31 @@ export function or<T>(other: Iterable<T>): (source: Iterable<T>) => Iterable<T> 
 export function toArray<T>(iterable: Iterable<T>): ReadonlyArray<T> {
 	return Array.from(iterable);
 }
+
+/** Replaces the value of an item at the specified index, returning the new iterable set */
+export function updateAt<T>(index: number, value: T): (source: Iterable<T>) => Iterable<T> {
+	return function*(source) {
+		let i = 0;
+		for(const item of source) {
+			if (i === index) {
+				yield value;
+			} else {
+				yield item;
+			}
+			i = i + 1;
+		}
+	}
+}
+
+/** Returns a new iterable set that does not have the element at index */
+export function removeAt<T>(index: number): (source: Iterable<T>) => Iterable<T> {
+	return function*(source) {
+		let i = 0;
+		for(const item of source) {
+			if (i !== index) {
+				yield item;
+			}
+			i = i + 1;
+		}
+	}
+}

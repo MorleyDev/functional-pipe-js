@@ -316,7 +316,55 @@ test("iterable/operators", test => {
 		const result = Operators.toArray([1, 2, 3, 4, 5, 6]);
 		test.deepEqual(result, [1, 2, 3, 4, 5, 6]);
 		test.end();
-	})
+	});
+
+	test.test("updateAt :: (N, T) -> Iterable T -> Iterable T", test => {
+		test.test("updateAt :: (0, T) -> Iterable T, N > 3 -> (T ++ Iterable T)", test => {
+			const result = Operators.updateAt(0, 25)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [25, 2, 3, 4, 5]);
+			test.end();
+		});
+		test.test("updateAt :: (3, T) -> Iterable T, N > 3 -> (Iterable T ++ T ++ Iterable T)", test => {
+			const result = Operators.updateAt(3, 25)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [1, 2, 3, 25, 5]);
+			test.end();
+		});
+		test.test("updateAt :: (-3, T) -> Iterable T -> Iterable T", test => {
+			const result = Operators.updateAt(-3, 25)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [1, 2, 3, 4, 5]);
+			test.end();
+		});
+		test.test("updateAt :: (6, T) -> Iterable T, N < 6 -> Iterable T", test => {
+			const result = Operators.updateAt(6, 25)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [1, 2, 3, 4, 5]);
+			test.end();
+		});
+		test.end();
+	});
+
+	test.test("removeAt :: (N, T) -> Iterable T -> Iterable T", test => {
+		test.test("removeAt :: (0, T) -> Iterable T, N > 0 -> (T ++ Iterable T)", test => {
+			const result = Operators.removeAt(0)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [2, 3, 4, 5]);
+			test.end();
+		});
+		test.test("removeAt :: (3, T) -> Iterable T, N > 3 -> (Iterable T ++ T ++ Iterable T)", test => {
+			const result = Operators.removeAt(3)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [1, 2, 3, 5]);
+			test.end();
+		});
+		test.test("removeAt :: (-3, T) -> Iterable T -> Iterable T", test => {
+			const result = Operators.removeAt(-3)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [1, 2, 3, 4, 5]);
+			test.end();
+		});
+		test.test("removeAt :: (6, T) -> Iterable T, N < 6 -> Iterable T", test => {
+			const result = Operators.removeAt(6)([1, 2, 3, 4, 5]);
+			test.deepEquals(Array.from(result), [1, 2, 3, 4, 5]);
+			test.end();
+		});
+		test.end();
+	});
 
 	test.end();
 });

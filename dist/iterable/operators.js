@@ -391,4 +391,33 @@ function toArray(iterable) {
     return Array.from(iterable);
 }
 exports.toArray = toArray;
+/** Replaces the value of an item at the specified index, returning the new iterable set */
+function updateAt(index, value) {
+    return function* (source) {
+        let i = 0;
+        for (const item of source) {
+            if (i === index) {
+                yield value;
+            }
+            else {
+                yield item;
+            }
+            i = i + 1;
+        }
+    };
+}
+exports.updateAt = updateAt;
+/** Returns a new iterable set that does not have the element at index */
+function removeAt(index) {
+    return function* (source) {
+        let i = 0;
+        for (const item of source) {
+            if (i !== index) {
+                yield item;
+            }
+            i = i + 1;
+        }
+    };
+}
+exports.removeAt = removeAt;
 //# sourceMappingURL=operators.js.map

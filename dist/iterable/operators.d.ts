@@ -62,3 +62,7 @@ export declare function shuffle<T>(it: Iterable<T>, rand?: () => number): Iterab
 export declare function or<T>(other: Iterable<T>): (source: Iterable<T>) => Iterable<T>;
 /** Evaluate the entire iterable to a readonly array. Provided as type deduction seems to fail when using Array.from to accomplish this outside of a lamda */
 export declare function toArray<T>(iterable: Iterable<T>): ReadonlyArray<T>;
+/** Replaces the value of an item at the specified index, returning the new iterable set */
+export declare function updateAt<T>(index: number, value: T): (source: Iterable<T>) => Iterable<T>;
+/** Returns a new iterable set that does not have the element at index */
+export declare function removeAt<T>(index: number): (source: Iterable<T>) => Iterable<T>;
