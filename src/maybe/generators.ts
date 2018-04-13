@@ -11,6 +11,10 @@ export function find<T>(predicate: (value: T) => boolean): (it: Iterable<T>) => 
 	}
 }
 
+export function maybeIf<T>(predicate: (v: T) => boolean): (value: T) => Maybe<T> {
+	return value => predicate(value) ? just(value) : nothing();
+}
+
 export function first<T>(it: Iterable<T>): Maybe<T> {
 	for (const item of it) {
 		return just(item);

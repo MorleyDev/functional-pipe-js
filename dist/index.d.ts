@@ -7,6 +7,7 @@ import { $$ } from "./pipe";
 export declare type Maybe<T> = _Maybe.Maybe<T>;
 export declare const Maybe: {
     find<T>(predicate: (value: T) => boolean): (it: Iterable<T>) => _Maybe.Maybe<T>;
+    maybeIf<T>(predicate: (v: T) => boolean): (value: T) => _Maybe.Maybe<T>;
     first<T>(it: Iterable<T>): _Maybe.Maybe<T>;
     last<T>(it: Iterable<T>): _Maybe.Maybe<T>;
     elementAt<T>(index: number): (it: Iterable<T>) => _Maybe.Maybe<T>;

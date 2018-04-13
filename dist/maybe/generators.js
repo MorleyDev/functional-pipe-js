@@ -12,6 +12,10 @@ function find(predicate) {
     };
 }
 exports.find = find;
+function maybeIf(predicate) {
+    return value => predicate(value) ? maybe_1.just(value) : maybe_1.nothing();
+}
+exports.maybeIf = maybeIf;
 function first(it) {
     for (const item of it) {
         return maybe_1.just(item);

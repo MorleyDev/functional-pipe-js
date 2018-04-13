@@ -54,5 +54,18 @@ test.test("maybe/generators", test => {
 		});
 		test.end();
 	});
+	test.test("maybeIf :: (T -> Boolean) -> T -> Maybe T", test => {
+		test.test("maybeIf :: (T -> true) -> T -> just T", test => {
+			const maybe = Generators.maybeIf((x: number) => x === 25)(25);
+			test.deepEquals(Array.from(maybe), [25]);
+			test.end();
+		});
+		test.test("maybeIf :: (T -> false) -> T -> nothing", test => {
+			const maybe = Generators.maybeIf((x: number) => x === 25)(72);
+			test.deepEquals(Array.from(maybe), []);
+			test.end();
+		});
+		test.end();
+	});
 	test.end();
 });
