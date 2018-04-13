@@ -4,8 +4,9 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./not"));
-__export(require("./or"));
 __export(require("./and"));
+__export(require("./or"));
+__export(require("./xor"));
 function unit(value) { return value; }
 exports.unit = unit;
 //# sourceMappingURL=operators.js.map

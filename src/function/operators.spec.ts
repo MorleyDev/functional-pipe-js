@@ -46,6 +46,25 @@ test.test("function/operators", test => {
 		test.end();
 	});
 
+	test.test("xor :: (...(...T) -> Boolean) -> (...T) -> Boolean", test => {
+		test.test("xor :: (...(...T) -> Boolean) -> (...T) -> True", test => {
+			test.true(Operators.xor((x: number) => x === 20, (x: number) => x === 25, (x: number) => x === 30)(20));
+			test.true(Operators.xor((x: number) => x === 20, (x: number) => x === 25, (x: number) => x === 30)(25));
+			test.true(Operators.xor((x: number) => x === 20, (x: number) => x === 25, (x: number) => x === 30)(30));
+			test.true(Operators.xor((x: number, y: number) => x === 20 && y == 25, (x: number, y: number) => x === 25 && y === 30, (x: number, y: number) => x === 30 && y == 50)(20, 25));
+			test.true(Operators.xor((x: string, y: number) => x === "22" && y == 25, (x: string, y: number) => x === "a" && y === 37, (x: string, y: number) => x === "37" && y == 50)("a", 37));
+			test.end();
+		});
+		test.test("xor :: (...(...T) -> Boolean) -> (...T) -> False", test => {
+			test.false(Operators.xor((x: number) => x === 20, (x: number) => x === 25, (x: number) => x === 30)(120));
+			test.false(Operators.xor((x: number) => x === 30, (x: number) => x === 25, (x: number) => x === 30)(30));
+			test.false(Operators.xor((x: number, y: number) => x === 120 && y == 25, (x: number, y: number) => x === 25 && y === 30, (x: number, y: number) => x === 120 && y == 25)(120, 25));
+			test.false(Operators.xor((x: number, y: number) => x === 22 && y == 25, (x: number, y: number) => x === 25 && y === 37, (x: number, y: number) => x === 37 && y == 50)(20, 125));
+			test.end();
+		});
+		test.end();
+	});
+
 	test.test("and :: (...(...T) -> Boolean) -> (...T) -> Boolean", test => {
 		test.test("and :: (...(...T) -> Boolean) -> (...T) -> True", test => {
 			test.true(Operators.and((x: number) => x === 20, (x: number) => x < 25, (x: number) => x < 30)(20));
