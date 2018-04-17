@@ -85,8 +85,18 @@ exports.scan = scan;
 /** Reduce the items in an iterable down to a single instance of the same type as the type contained by that Iterable */
 function fold(predicate) {
     return function (iterable) {
-        const [head, ...tail] = Array.from(iterable);
-        return reduce(predicate, head)(tail);
+        let index = 0;
+        let prevState;
+        for (const value of iterable) {
+            if (index === 0) {
+                prevState = value;
+            }
+            else {
+                prevState = predicate(prevState, value, index);
+            }
+            index = index + 1;
+        }
+        return prevState;
     };
 }
 exports.fold = fold;

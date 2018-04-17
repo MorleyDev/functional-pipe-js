@@ -34,18 +34,18 @@ tap_1.test("iterable/operators", test => {
         test.end();
     });
     test.test("reduce :: ((U, T, Number) -> (Iterable T, U) -> U", test => {
-        const result = Operators.reduce((prev, curr, index) => prev + parseInt(curr) + index, 100)(["10", "20", "30"]);
-        test.equal(result, 163);
+        const result = Operators.reduce((prev, curr, index) => prev + parseInt(curr) + (index != 0 ? index : 1000), 100)(["10", "20", "30"]);
+        test.equal(result, 1163);
         test.end();
     });
     test.test("scan :: ((U, T, Number) -> (Iterable T, U) -> Iterable U", test => {
-        const result = Operators.scan((prev, curr, index) => prev + parseInt(curr) + index, 100)(["10", "20", "30"]);
-        test.deepEqual(Array.from(result), [110, 131, 163]);
+        const result = Operators.scan((prev, curr, index) => prev + parseInt(curr) + (index != 0 ? index : 1000), 100)(["10", "20", "30"]);
+        test.deepEqual(Array.from(result), [1110, 1131, 1163]);
         test.end();
     });
     test.test("fold :: ((T, T, Number) -> Iterable T -> Iterable T", test => {
-        const result = Operators.reduce((prev, curr, index) => (parseInt(prev) + parseInt(curr) + index).toString(), "100")(["10", "20", "30"]);
-        test.equal(result, "163");
+        const result = Operators.fold((prev, curr, index) => (parseInt(prev) + parseInt(curr) + (index != 0 ? index : 1000)).toString())(["10", "20", "30"]);
+        test.equal(result, "63");
         test.end();
     });
     test.test("take :: Number -> Iterable T -> Iterable T", test => {
