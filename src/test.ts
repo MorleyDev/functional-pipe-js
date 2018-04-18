@@ -1,6 +1,9 @@
 import { readdirSync, statSync } from "fs";
+
 import { join } from "path";
 import { test } from "tap";
+
+(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");
 
 importTestsIn(__dirname).catch(err => console.error(err));
 

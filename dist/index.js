@@ -12,5 +12,8 @@ exports.Promises = Promises;
 const _Maybe = require("./maybe");
 const pipe_1 = require("./pipe");
 exports.$$ = pipe_1.$$;
-exports.Maybe = Object.assign({}, _Maybe, MaybeGenerators);
+exports.Maybe = {
+    ..._Maybe,
+    ...MaybeGenerators
+};
 //# sourceMappingURL=index.js.map

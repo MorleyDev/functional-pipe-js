@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = require("path");
+Symbol.asyncIterator = Symbol.asyncIterator || Symbol.for("Symbol.asyncIterator");
 importTestsIn(__dirname).catch(err => console.error(err));
 async function importTestsIn(path) {
     const testFiles = findTestsIn(path);
