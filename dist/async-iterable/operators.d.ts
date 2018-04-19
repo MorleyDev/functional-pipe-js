@@ -1,5 +1,5 @@
 /** Yield the original sequence unmodified */
-export declare function unit<T>(iterable: AsyncIterable<T>): AsyncIterable<T>;
+export declare function identity<T>(iterable: AsyncIterable<T>): AsyncIterable<T>;
 /** Yield the original sequence unmodified, calling the tapper on every item in the sequence */
 export declare function tap<T>(tapper: (value: T, index: number) => any | PromiseLike<any>): (it: AsyncIterable<T>) => AsyncIterable<T>;
 /** Yield a new iterable sequence that applies the mapper to every item in the original */

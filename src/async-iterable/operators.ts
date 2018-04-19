@@ -1,5 +1,5 @@
 /** Yield the original sequence unmodified */
-export async function* unit<T>(iterable: AsyncIterable<T>): AsyncIterable<T> {
+export async function* identity<T>(iterable: AsyncIterable<T>): AsyncIterable<T> {
 	return yield* iterable;
 }
 

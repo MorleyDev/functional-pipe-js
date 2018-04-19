@@ -4,9 +4,9 @@ import * as Operators from "./operators";
 import { test } from "tap";
 
 test("async-iterable/operators", async test => {
-	test.test("unit :: AsyncIterable T -> AsyncIterable T", async test => {
+	test.test("identity :: AsyncIterable T -> AsyncIterable T", async test => {
 		const input = ["a", "b", "c", "f"];
-		const output = await Operators.toArray(Operators.unit(Generators.from(input)));
+		const output = await Operators.toArray(Operators.identity(Generators.from(input)));
 		test.deepEqual(output, input);
 		test.end();
 	});

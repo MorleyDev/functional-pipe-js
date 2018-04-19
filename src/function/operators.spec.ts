@@ -17,12 +17,19 @@ test.test("function/operators", test => {
 		});
 		test.end();
 	});
-	test.test("unit :: T -> T", test => {
-		test.equals(Operators.unit(10), 10);
+	test.test("identity :: T -> T", test => {
+		test.equals(Operators.identity(10), 10);
 
 		const ref = {};
-		test.equals(Operators.unit(ref), ref);
+		test.equals(Operators.identity(ref), ref);
 
+		test.end();
+	});
+
+	test.test("val :: T -> _ -> T", test => {
+		test.equals(Operators.val(10)(), 10);
+		test.equals(Operators.val(120)(), 120);
+		test.equals(Operators.val(120)(5, 8, 2, 1, 0, "tree", "age", 41, 2.5), 120);
 		test.end();
 	});
 

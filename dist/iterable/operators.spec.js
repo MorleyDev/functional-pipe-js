@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Operators = require("./operators");
 const tap_1 = require("tap");
 tap_1.test("iterable/operators", test => {
-    test.test("unit :: Iterable T -> Iterable T", test => {
+    test.test("identity :: Iterable T -> Iterable T", test => {
         const input = ["a", "b", "c", "f"];
-        const output = Array.from(Operators.unit(input));
+        const output = Array.from(Operators.identity(input));
         test.deepEqual(output, input);
         test.end();
     });
