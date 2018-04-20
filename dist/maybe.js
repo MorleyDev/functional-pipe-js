@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.maybe = Symbol("maybe");
 class MaybeImpl {
     constructor(extract) {
         this.extract = extract;
     }
+    [exports.maybe]() { return true; }
     [Symbol.iterator]() {
         const self = this;
         let returned = false;

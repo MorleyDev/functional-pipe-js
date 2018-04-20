@@ -93,7 +93,7 @@ test("async-iterable/operators", async test => {
 	test.test("take :: Number -> AsyncIterable T -> AsyncIterable T", async test => {
 		test.test("take :: Number 0 -> AsyncIterable T -> Empty", async test => {
 			const result = Operators.take(0)(Generators.from([10, 11, 12, 13]));
-			test.equal(await Operators.toArray(result), []);
+			test.deepEquals(await Operators.toArray(result), []);
 			test.end();
 		});
 		test.test("take :: Number < Length -> AsyncIterable T -> AsyncIterable T", async test => {

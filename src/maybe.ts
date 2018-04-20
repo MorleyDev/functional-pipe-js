@@ -1,10 +1,15 @@
+export const maybe: unique symbol = Symbol("maybe");
+
 export type Maybe<T> = {
+	[maybe](): boolean;
 	[Symbol.iterator](): Iterator<T>;
 };
 
-class MaybeImpl<T> implements Iterable<T> {
+class MaybeImpl<T> implements Maybe<T> {
 	constructor(private extract: () => ({ hasValue: false } | { hasValue: true; value: T })) {
 	}
+
+	public [maybe]() { return true; }
 
 	[Symbol.iterator](): Iterator<T> {
 		const self = this;

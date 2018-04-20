@@ -11,6 +11,7 @@ export declare const Maybe: {
     first<T>(it: Iterable<T>): _Maybe.Maybe<T>;
     last<T>(it: Iterable<T>): _Maybe.Maybe<T>;
     elementAt<T>(index: number): (it: Iterable<T>) => _Maybe.Maybe<T>;
+    maybe: typeof _Maybe.maybe;
     just: <T>(value: T) => _Maybe.Maybe<T>;
     nothing: () => _Maybe.Maybe<any>;
     infer: <T>(value: T | null | undefined) => _Maybe.Maybe<T>;

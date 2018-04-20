@@ -3,6 +3,17 @@ import * as Generators from "./generators";
 import { test } from "tap";
 
 test("iterable/generators", test => {
+	test.test("defer :: (() -> Iterable T) -> Iterable T", test => {
+		let executed = 0;
+		const gen = Generators.defer(function * () { executed = executed + 1; yield* [1, 2, 3]; });
+		test.equals(executed, 0);
+		test.deepEquals(Array.from(gen), [1, 2, 3]);
+		test.equals(executed, 1);
+		test.deepEquals(Array.from(gen), [1, 2, 3]);
+		test.equals(executed, 2);
+		test.end();
+	});
+
 	test.test("infinite :: () -> Iterable Number", test => {
 		const infinite = Generators.infinite();
 		const infiniteIterator1 = infinite[Symbol.iterator]();
