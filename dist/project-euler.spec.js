@@ -11,6 +11,11 @@ test.test("project-euler", test => {
     const fibonacci = () => pipe_1.$$(generators_1.infinite())
         .$(operators_1.scan(([prev, curr], _) => [curr, prev + curr], [0, 1]))
         .$$(operators_1.map(([_, x]) => x));
+    const primes = () => pipe_1.$$(generators_1.infinite())
+        .$(operators_1.skip(4))
+        .$(operators_1.scan((previousPrimes, index) => previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index], [2, 3]))
+        .$(operators_1.takeWhile(e => e.length <= 6))
+        .$$(operators_1.map(primes => operators_1.last(primes)));
     const isPowerOf = (pow) => (x) => {
         for (let i = pow; i <= x; i = i * pow) {
             if (i === x) {
@@ -111,8 +116,25 @@ test.test("project-euler", test => {
             .$(operators_1.fold((l, r) => l + r))
             .$$(sum => sum ** 2);
         const result = Math.abs(sumOfSquares - squareOfSums);
-        test.equals(result, 2640);
-        test.equals(result, 2640);
+        test.equals(result, 25164150);
+        test.end();
+    });
+    test.test("#7 What is the 10001st prime number?", test => {
+        const result = pipe_1.$$(generators_1.infinite())
+            .$(operators_1.scan((previousPrimes, index) => {
+            switch (index) {
+                case 0: return [];
+                case 1: return [];
+                case 2: return [2];
+                default:
+                    return previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index];
+            }
+        }, []))
+            .$(operators_1.map(primes => operators_1.last(primes)))
+            .$(operators_1.distinctUntilChanged)
+            .$(operators_1.skip(10000))
+            .$$(operators_1.first);
+        test.deepEquals(result, 104743);
         test.end();
     });
     test.end();

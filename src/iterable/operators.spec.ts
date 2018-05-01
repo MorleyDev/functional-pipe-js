@@ -187,6 +187,17 @@ test("iterable/operators", test => {
 		test.deepEqual(Array.from(result), [1, 2, 3, 4, 6, 9, 8]);
 		test.end();
 	});
+	test.test("distinctUntilChanged :: Iterable T -> Iterable T", test => {
+		const result = Operators.distinctUntilChanged([1, 2, 2, 3, 4, 6, 6, 6, 3, 1, 1, 1, 2, 4, 4, 4, 9, 8]);
+		test.deepEqual(Array.from(result), [1, 2, 3, 4, 6, 3, 1, 2, 4, 9, 8]);
+		test.end();
+	});
+	test.test("distinctUntilKeyChanged :: Iterable T -> Iterable T", test => {
+		const result = Operators.distinctUntilKeyChanged((v: number) => v % 10)([1, 2, 22, 2, 3, 4, 66, 6, 6, 6, 3, 1, 11, 21, 2, 4, 4, 4, 9, 8]);
+		test.deepEqual(Array.from(result), [1, 2, 3, 4, 66, 3, 1, 2, 4, 9, 8]);
+		test.end();
+	});
+
 
 	test.test("orderBy :: () -> Iterable T -> Iterable T", test => {
 		const result = Operators.orderBy()([1, 8, 2, 4, 3, 2]);

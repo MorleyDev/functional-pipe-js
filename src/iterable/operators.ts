@@ -310,6 +310,34 @@ export function* distinct<T>(it: Iterable<T>): Iterable<T> {
 	}
 }
 
+
+/** Play items from a set, skipping ones that do not change */
+export function* distinctUntilChanged<T>(it: Iterable<T>): Iterable<T> {
+	let prev: T | undefined = undefined;
+	for (const item of it) {
+		if (item === prev) {
+			continue;
+		}
+		prev = item;
+		yield item;
+	}
+}
+
+/** Play items from a set, skipping ones that do not change */
+export function distinctUntilKeyChanged<T, U>(keySelector: (value: T) => U): (it: Iterable<T>) => Iterable<T> {
+	return function* (it) {
+		let prev: U | undefined = undefined;
+		for (const item of it) {
+			const key = keySelector(item);
+			if (key === prev) {
+				continue;
+			}
+			prev = key;
+			yield item;
+		}
+	};
+}
+
 const defaultKeySelector = (item: any, index: number) => item;
 const defaultComparison = (a: any, b: any) => {
 	if (a < b) {
@@ -393,9 +421,9 @@ export function toArray<T>(iterable: Iterable<T>): ReadonlyArray<T> {
 
 /** Replaces the value of an item at the specified index, returning the new iterable set */
 export function updateAt<T>(index: number, value: T): (source: Iterable<T>) => Iterable<T> {
-	return function*(source) {
+	return function* (source) {
 		let i = 0;
-		for(const item of source) {
+		for (const item of source) {
 			if (i === index) {
 				yield value;
 			} else {
@@ -408,9 +436,9 @@ export function updateAt<T>(index: number, value: T): (source: Iterable<T>) => I
 
 /** Returns a new iterable set that does not have the element at index */
 export function removeAt<T>(index: number): (source: Iterable<T>) => Iterable<T> {
-	return function*(source) {
+	return function* (source) {
 		let i = 0;
-		for(const item of source) {
+		for (const item of source) {
 			if (i !== index) {
 				yield item;
 			}

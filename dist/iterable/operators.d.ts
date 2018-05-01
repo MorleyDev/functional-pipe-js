@@ -48,6 +48,10 @@ export declare function some<T>(predicate: (item: T, index: number) => boolean):
 export declare function every<T>(predicate: (item: T, index: number) => boolean): (it: Iterable<T>) => boolean;
 /** Play unique items from a set */
 export declare function distinct<T>(it: Iterable<T>): Iterable<T>;
+/** Play items from a set, skipping ones that do not change */
+export declare function distinctUntilChanged<T>(it: Iterable<T>): Iterable<T>;
+/** Play items from a set, skipping ones that do not change */
+export declare function distinctUntilKeyChanged<T, U>(keySelector: (value: T) => U): (it: Iterable<T>) => Iterable<T>;
 /** Play the given Iterable ordered by a given key or itself */
 export declare function orderBy<T, U = T>(keySelector?: (item: T, index: number) => U, comparison?: (a: U, b: U) => number): ((item: Iterable<T>) => Iterable<T>);
 /** Play the given Iterable in reverse order */

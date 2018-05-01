@@ -320,6 +320,33 @@ function* distinct(it) {
     }
 }
 exports.distinct = distinct;
+/** Play items from a set, skipping ones that do not change */
+function* distinctUntilChanged(it) {
+    let prev = undefined;
+    for (const item of it) {
+        if (item === prev) {
+            continue;
+        }
+        prev = item;
+        yield item;
+    }
+}
+exports.distinctUntilChanged = distinctUntilChanged;
+/** Play items from a set, skipping ones that do not change */
+function distinctUntilKeyChanged(keySelector) {
+    return function* (it) {
+        let prev = undefined;
+        for (const item of it) {
+            const key = keySelector(item);
+            if (key === prev) {
+                continue;
+            }
+            prev = key;
+            yield item;
+        }
+    };
+}
+exports.distinctUntilKeyChanged = distinctUntilKeyChanged;
 const defaultKeySelector = (item, index) => item;
 const defaultComparison = (a, b) => {
     if (a < b) {

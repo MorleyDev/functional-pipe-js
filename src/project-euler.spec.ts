@@ -1,7 +1,7 @@
 import * as Strings from "./string/operators";
 import * as test from "tap";
 
-import { every, filter, first, flatMap, fold, map, scan, skip, take, takeWhile, tap, toArray } from "./iterable/operators";
+import { distinctUntilChanged, every, filter, first, flatMap, fold, last, map, scan, skip, take, takeUntil, takeWhile, tap, toArray } from "./iterable/operators";
 import { infinite, range } from "./iterable/generators";
 
 import { $$ } from "./pipe";
@@ -12,6 +12,12 @@ test.test("project-euler", test => {
 	const fibonacci = () => $$(infinite())
 		.$(scan(([prev, curr], _) => [curr, prev + curr], [0, 1]))
 		.$$(map(([_, x]) => x));
+
+	const primes = () => $$(infinite())
+		.$(skip(4))
+		.$(scan((previousPrimes, index) => previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index], [2, 3]))
+		.$(takeWhile(e => e.length <= 6))
+		.$$(map(primes => last(primes)!));
 
 	const isPowerOf = (pow: number) => (x: number) => {
 		for (let i = pow; i <= x; i = i * pow) {
@@ -125,6 +131,25 @@ test.test("project-euler", test => {
 
 		const result = Math.abs(sumOfSquares - squareOfSums);
 		test.equals(result, 25164150);
+		test.end();
+	});
+	test.test("#7 What is the 10001st prime number?", test => {
+		const result = $$(infinite())
+			.$(scan((previousPrimes, index) => {
+				switch (index) {
+					case 0: return [];
+					case 1: return [];
+					case 2: return [2];
+					default:
+						return previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index];
+				}
+			}, [] as number[]))
+			.$(map(primes => last(primes)!))
+			.$(distinctUntilChanged)
+			.$(skip(10000))
+			.$$(first);
+
+		test.deepEquals(result, 104743);
 		test.end();
 	});
 	test.end();
