@@ -2,7 +2,7 @@
 export declare function defer<T>(func: () => Iterable<T>): Iterable<T>;
 /** Yields count numbers from start onwards
  * e.g range(10, 3) will yield [10, 11, 12] */
-export declare function range(start: number, count: number): Iterable<number>;
+export declare function range(start: number, count: number, inc?: number): Iterable<number>;
 /** Yields an infinite sequence of numbers starting at 0 */
 export declare function infinite(): Iterable<number>;
 /** Yields the infinite fibonacci sequence (1, 1, 2, 3, 5, 8, 13, etc...) */

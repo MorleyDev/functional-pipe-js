@@ -14,10 +14,10 @@ function defer(func) {
 exports.defer = defer;
 /** Yields count numbers from start onwards
  * e.g range(10, 3) will yield [10, 11, 12] */
-function range(start, count) {
+function range(start, count, inc = 1) {
     return defer(function* () {
         for (let i = 0; i < count; ++i) {
-            yield start + i;
+            yield start + (i * inc);
         }
     });
 }
@@ -54,21 +54,30 @@ function primes(limit) {
     if (limit != null) {
         // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
         return defer(function* () {
-            let set = Array.from(range(2, limit - 1));
-            let curr = 2;
+            let set = Array.from(range(3, (limit / 2) - 1, 2));
+            let curr = 3;
             const sqrtLimit = Math.sqrt(limit);
+            yield 2;
+            let lastIndex = 0;
             while (curr <= sqrtLimit) {
+                yield curr;
                 set = set.filter(s => s === curr || s % curr !== 0);
-                curr = set.find(s => s > curr);
+                lastIndex = set.findIndex(s => s > curr);
+                if (lastIndex == null) {
+                    return;
+                }
+                curr = set[lastIndex];
             }
-            yield* set;
+            yield curr;
+            yield* set.slice(lastIndex + 1);
+            //			yield* set;
         });
     }
     return defer(function* () {
         const previousPrimes = [2, 3];
         yield 2;
         yield 3;
-        for (let curr = 5;; ++curr) {
+        for (let curr = 5;; curr += 2) {
             let allowed = true;
             const sqrt = Math.sqrt(curr);
             for (const prime of previousPrimes) {

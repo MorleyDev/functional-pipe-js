@@ -33,12 +33,29 @@ test("iterable/generators", test => {
 		test.end();
 	});
 
-	test.test("range :: (A, B) -> Iterable N", test => {
+	test.test("range :: (A, B, inc = 1) -> Iterable N", test => {
 		test.test("range :: (A >= 0, B >= 0) -> Iterable [A ... (A + B)]", test => {
 			const range = Generators.range(15, 10);
 			const runTest = () => {
 				const rangeIterator1 = range[Symbol.iterator]();
 				for (let i = 15; i < 25; ++i) {
+					const { done, value } = rangeIterator1.next();
+					test.false(done);
+					test.equal(value, i);
+				}
+				const { done, value } = rangeIterator1.next();
+				test.true(done);
+				test.equal(value, undefined);
+			};
+			runTest();
+			runTest(); // ES6 iterable wrapper prevents state being stored
+			test.end();
+		});
+		test.test("range :: (A >= 0, B >= 0, inc=2) -> Iterable [A ... (A + B)]", test => {
+			const range = Generators.range(15, 10, 2);
+			const runTest = () => {
+				const rangeIterator1 = range[Symbol.iterator]();
+				for (let i = 15; i < 35; i += 2) {
 					const { done, value } = rangeIterator1.next();
 					test.false(done);
 					test.equal(value, i);
@@ -138,18 +155,8 @@ test("iterable/generators", test => {
 		test.end();
 	});
 	test.test("primes :: (limit: Number) -> Iterable Number", test => {
-		const it = Generators.primes(30)[Symbol.iterator]();
-		test.deepEquals(it.next(), { value: 2, done: false });
-		test.deepEquals(it.next(), { value: 3, done: false });
-		test.deepEquals(it.next(), { value: 5, done: false });
-		test.deepEquals(it.next(), { value: 7, done: false });
-		test.deepEquals(it.next(), { value: 11, done: false });
-		test.deepEquals(it.next(), { value: 13, done: false });
-		test.deepEquals(it.next(), { value: 17, done: false });
-		test.deepEquals(it.next(), { value: 19, done: false });
-		test.deepEquals(it.next(), { value: 23, done: false });
-		test.deepEquals(it.next(), { value: 29, done: false });
-		test.deepEquals(it.next(), { value: null, done: true });
+		const it = Array.from(Generators.primes(30));
+		test.deepEquals(it, [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
 		test.end();
 	});
 
