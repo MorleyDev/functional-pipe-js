@@ -8,4 +8,8 @@ function substr(startIndex, count) {
     return value => value.substr(startIndex, count);
 }
 exports.substr = substr;
+function charAt(index) {
+    return value => value.length <= index ? undefined : value.charAt(index);
+}
+exports.charAt = charAt;
 //# sourceMappingURL=operators.js.map

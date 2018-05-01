@@ -23,5 +23,12 @@ test.test("string/operators", test => {
 		test.equals(Strings.substr(30, 10)("abcdefghijklmnopqrstuvwxyz"), "");
 		test.end();
 	});
+
+	test.test("charAt :: (Index) -> String -> String", test => {
+		test.equals(Strings.charAt(0)("abcdefghijklmnopqrstuvwxyz"), "a");
+		test.equals(Strings.charAt(5)("abcdefghijklmnopqrstuvwxyz"), "f");
+		test.equals(Strings.charAt(30)("abcdefghijklmnopqrstuvwxyz"), undefined);
+		test.end();
+	});
 	test.end();
 });
