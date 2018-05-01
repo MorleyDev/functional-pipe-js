@@ -14,6 +14,10 @@ test.test("string/operators", test => {
             test.equals(Strings.join("||")(["a", "b", "123", "abBa", "dabba"]), "a||b||123||abBa||dabba");
             test.end();
         });
+        test.test("concat :: (...String) -> String", test => {
+            test.equals(Strings.concat("a", "b", "123", "abBa", "dabba"), "ab123abBadabba");
+            test.end();
+        });
         test.end();
     });
     test.end();
