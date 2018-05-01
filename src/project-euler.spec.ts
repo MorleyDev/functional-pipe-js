@@ -1,7 +1,7 @@
 import * as Strings from "./string/operators";
 import * as test from "tap";
 
-import { distinctUntilChanged, every, filter, first, flatMap, fold, last, map, scan, skip, take, takeUntil, takeWhile, tap, toArray } from "./iterable/operators";
+import { distinctUntilChanged, every, filter, first, flatMap, fold, last, map, scan, skip, some, take, takeUntil, takeWhile, tap, toArray } from "./iterable/operators";
 import { infinite, range } from "./iterable/generators";
 
 import { $$ } from "./pipe";
@@ -20,7 +20,7 @@ test.test("project-euler", test => {
 				case 1: return [];
 				case 2: return [2];
 				default:
-					return previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index];
+					return $$(previousPrimes).$(take(Math.sqrt(index) | 0)).$$(some(prime => index % prime === 0)) ? previousPrimes : [...previousPrimes, index];
 			}
 		}, [] as number[]))
 		.$(map(primes => last(primes)!))
@@ -113,7 +113,6 @@ test.test("project-euler", test => {
 		test.end();
 	});
 	test.test("#5 what is the smallest positive number that is evenly divisible by all numbers from 1 to 20", test => {
-
 		function smallestDivisible(count: number) {
 			const primes = $$(range(2, count - 2)).$(filter(isPrime)).$$(toArray);
 			const composites = $$(range(1, count)).$(filter(not(isPrime))).$$(toArray);
@@ -162,6 +161,31 @@ test.test("project-euler", test => {
 			.$(map((index) => $$(digits).$(Strings.substr(index, 13)).$$(product)))
 			.$$(fold((p, c) => p > c ? p : c));
 		test.equals(largestProduct, 23514624000);
+		test.end();
+	});
+	test.test("#9 find the pythagorean triplet for which a + b + c = 1000", test => {
+		const abc = $$(range(1, 500))
+			.$(map(a => ({ a, c: ((a ** 2 + 500000 - 1000 * a) / (1000 - a)) | 0 })))
+			.$(map(({ a, c }) => ({ a, b: (1000 - a - c) | 0, c })))
+			.$(filter(({ a, b, c }) => b > a && c > b))
+			.$(filter(({ a, b, c }) => a + b + c === 1000))
+			.$(filter(({ a, b, c }) => a ** 2 + b ** 2 === c ** 2))
+			.$(map(({ a, b, c }) => a * b * c))
+			.$$(first);
+		test.equals(abc, 31875000);
+		test.end();
+	})
+	test.test("#10 find the sum of primes below two million", test => {
+		// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+		let set = toArray(range(2, 2000000 - 1));
+		let curr = 2;
+		while (curr <= Math.sqrt(2000000)) {
+			set = set.filter(s => s === curr || s % curr !== 0);
+			curr = set.find(s => s > curr)!;
+		}
+
+		const result = $$(set).$$(fold((prev, curr) => prev + curr));
+		test.equals(result, 142913828922);
 		test.end();
 	});
 	test.end();

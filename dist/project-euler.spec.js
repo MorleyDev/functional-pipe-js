@@ -18,7 +18,7 @@ test.test("project-euler", test => {
             case 1: return [];
             case 2: return [2];
             default:
-                return previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index];
+                return pipe_1.$$(previousPrimes).$(operators_1.take(Math.sqrt(index) | 0)).$$(operators_1.some(prime => index % prime === 0)) ? previousPrimes : [...previousPrimes, index];
         }
     }, []))
         .$(operators_1.map(primes => operators_1.last(primes)))
@@ -144,7 +144,31 @@ test.test("project-euler", test => {
         const largestProduct = pipe_1.$$(generators_1.range(0, digits.length - 13))
             .$(operators_1.map((index) => pipe_1.$$(digits).$(Strings.substr(index, 13)).$$(product)))
             .$$(operators_1.fold((p, c) => p > c ? p : c));
-        test.equals(largestProduct, 5832);
+        test.equals(largestProduct, 23514624000);
+        test.end();
+    });
+    test.test("#9 find the pythagorean triplet for which a + b + c = 1000", test => {
+        const abc = pipe_1.$$(generators_1.range(1, 500))
+            .$(operators_1.map(a => ({ a, c: ((a ** 2 + 500000 - 1000 * a) / (1000 - a)) | 0 })))
+            .$(operators_1.map(({ a, c }) => ({ a, b: (1000 - a - c) | 0, c })))
+            .$(operators_1.filter(({ a, b, c }) => b > a && c > b))
+            .$(operators_1.filter(({ a, b, c }) => a + b + c === 1000))
+            .$(operators_1.filter(({ a, b, c }) => a ** 2 + b ** 2 === c ** 2))
+            .$(operators_1.map(({ a, b, c }) => a * b * c))
+            .$$(operators_1.first);
+        test.equals(abc, 31875000);
+        test.end();
+    });
+    test.test("#10 find the sum of primes below two million", test => {
+        // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+        let set = operators_1.toArray(generators_1.range(2, 2000000 - 1));
+        let curr = 2;
+        while (curr <= Math.sqrt(2000000)) {
+            set = set.filter(s => s === curr || s % curr !== 0);
+            curr = set.find(s => s > curr);
+        }
+        const result = pipe_1.$$(set).$$(operators_1.fold((prev, curr) => prev + curr));
+        test.equals(result, 142913828922);
         test.end();
     });
     test.end();
