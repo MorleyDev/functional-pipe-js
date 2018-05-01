@@ -274,12 +274,12 @@ export function unshift<T>(...next: T[]): (it: AsyncIterable<T>) => AsyncIterabl
 /** True if at least one item in a sequence matches the given predicate */
 export function some<T>(predicate: (item: T, index: number) => boolean | PromiseLike<boolean>): (it: AsyncIterable<T>) => Promise<boolean> {
 	return async it => {
-		let i = 0;
+		let index = 0;
 		for await (const item of it) {
-			if (await predicate(item, i)) {
+			if (await predicate(item, index)) {
 				return true;
 			}
-			i = i + 1;
+			index = index + 1;
 		}
 		return false;
 	};

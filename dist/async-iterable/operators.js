@@ -572,14 +572,14 @@ exports.unshift = unshift;
 /** True if at least one item in a sequence matches the given predicate */
 function some(predicate) {
     return async (it) => {
-        let i = 0;
+        let index = 0;
         try {
             for (var it_3 = __asyncValues(it), it_3_1; it_3_1 = await it_3.next(), !it_3_1.done;) {
                 const item = await it_3_1.value;
-                if (await predicate(item, i)) {
+                if (await predicate(item, index)) {
                     return true;
                 }
-                i = i + 1;
+                index = index + 1;
             }
         }
         catch (e_22_1) { e_22 = { error: e_22_1 }; }

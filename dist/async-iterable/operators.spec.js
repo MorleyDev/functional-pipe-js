@@ -221,32 +221,32 @@ tap_1.test("async-iterable/operators", async (test) => {
         test.end();
     });
     test.test("some :: ((T, Number) -> Boolean) -> AsyncIterable T -> Boolean", async (test) => {
-        const trueResult = Operators.some((x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
-        const falseResult = Operators.some((x, i) => x + i === 10)(Generators.from([1, 8, 3, 2]));
+        const trueResult = await Operators.some((x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
+        const falseResult = await Operators.some((x, i) => x + i === 10)(Generators.from([1, 8, 3, 2]));
         test.true(trueResult);
         test.false(falseResult);
         test.end();
     });
     test.test("some :: ((T, Number) -> Promise Boolean) -> AsyncIterable T -> Boolean", async (test) => {
-        const trueResult = Operators.some(async (x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
-        const falseResult = Operators.some(async (x, i) => x + i === 10)(Generators.from([1, 8, 3, 2]));
+        const trueResult = await Operators.some(async (x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
+        const falseResult = await Operators.some(async (x, i) => x + i === 10)(Generators.from([1, 8, 3, 2]));
         test.true(trueResult);
         test.false(falseResult);
         test.end();
     });
     test.test("every :: ((T, Number) -> Boolean) -> AsyncIterable T -> Boolean", async (test) => {
-        const trueResult = Operators.every((x, i) => x + i !== 10)(Generators.from([1, 8, 3, 2]));
-        const falseResult1 = Operators.every((x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
-        const falseResult2 = Operators.every((x, i) => x + i !== 10)(Generators.from([1, 9, 3, 2]));
+        const trueResult = await Operators.every((x, i) => x + i !== 10)(Generators.from([1, 8, 3, 2]));
+        const falseResult1 = await Operators.every((x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
+        const falseResult2 = await Operators.every((x, i) => x + i !== 10)(Generators.from([1, 9, 3, 2]));
         test.true(trueResult);
         test.false(falseResult1);
         test.false(falseResult2);
         test.end();
     });
     test.test("every :: ((T, Number) -> Promise Boolean) -> AsyncIterable T -> Boolean", async (test) => {
-        const trueResult = Operators.every(async (x, i) => x + i !== 10)(Generators.from([1, 8, 3, 2]));
-        const falseResult1 = Operators.every(async (x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
-        const falseResult2 = Operators.every(async (x, i) => x + i !== 10)(Generators.from([1, 9, 3, 2]));
+        const trueResult = await Operators.every(async (x, i) => x + i !== 10)(Generators.from([1, 8, 3, 2]));
+        const falseResult1 = await Operators.every(async (x, i) => x + i === 10)(Generators.from([1, 9, 3, 2]));
+        const falseResult2 = await Operators.every(async (x, i) => x + i !== 10)(Generators.from([1, 9, 3, 2]));
         test.true(trueResult);
         test.false(falseResult1);
         test.false(falseResult2);

@@ -2,6 +2,7 @@ import * as Generators from "./iterable/generators";
 import * as Iterables from "./iterable/operators";
 import * as Maybes from "./maybe/operators";
 import * as Promises from "./promise/operators";
+import * as Strings from "./string/operators";
 import * as _Maybe from "./maybe";
 import { $$ } from "./pipe";
 export declare type Maybe<T> = _Maybe.Maybe<T>;
@@ -17,4 +18,4 @@ export declare const Maybe: {
     infer: <T>(value: T | null | undefined) => _Maybe.Maybe<T>;
     defer: <T>(defer: () => _Maybe.Maybe<T>) => _Maybe.Maybe<T>;
 };
-export { Iterables, Generators, Promises, Maybes, $$ };
+export { Iterables, Generators, Promises, Maybes, Strings, $$ };
