@@ -1,4 +1,6 @@
+export declare const maybe: unique symbol;
 export declare type Maybe<T> = {
+    [maybe](): boolean;
     [Symbol.iterator](): Iterator<T>;
 };
 export declare const just: <T>(value: T) => Maybe<T>;

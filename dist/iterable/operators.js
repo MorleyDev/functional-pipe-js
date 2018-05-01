@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /** Yield the original sequence unmodified */
-function* unit(iterable) {
+function* identity(iterable) {
     return yield* iterable;
 }
-exports.unit = unit;
+exports.identity = identity;
 /** Yield the original sequence unmodified, calling the tapper on every item in the sequence */
 function tap(tapper) {
     return function* (it) {

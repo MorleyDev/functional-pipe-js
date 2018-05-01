@@ -1,3 +1,4 @@
+export declare function defer<T>(func: () => Iterable<T>): Iterable<T>;
 export declare function range(start: number, count: number): Iterable<number>;
 export declare function infinite(): Iterable<number>;
 export declare function empty(): Iterable<any>;

@@ -1,5 +1,5 @@
 /** Yield the original sequence unmodified */
-export function* unit<T>(iterable: Iterable<T>): Iterable<T> {
+export function* identity<T>(iterable: Iterable<T>): Iterable<T> {
 	return yield* iterable;
 }
 

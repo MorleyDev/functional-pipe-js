@@ -1,16 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class GeneratorIterable {
-    constructor(generator) {
-        this.generator = generator;
-    }
-    [Symbol.iterator]() {
-        const result = this.generator();
-        return result[Symbol.iterator]();
-    }
+function defer(func) {
+    return new (class {
+        constructor(generator) {
+            this.generator = generator;
+        }
+        [Symbol.iterator]() {
+            return this.generator()[Symbol.iterator]();
+        }
+    })(func);
 }
+exports.defer = defer;
 function range(start, count) {
-    return new GeneratorIterable(function* () {
+    return defer(function* () {
         for (let i = 0; i < count; ++i) {
             yield start + i;
         }
@@ -18,7 +20,7 @@ function range(start, count) {
 }
 exports.range = range;
 function infinite() {
-    return new GeneratorIterable(function* () {
+    return defer(function* () {
         for (let i = 0;; ++i) {
             yield i;
         }
@@ -28,7 +30,7 @@ exports.infinite = infinite;
 function* empty() { }
 exports.empty = empty;
 function concat(...iterables) {
-    return new GeneratorIterable(function* () {
+    return defer(function* () {
         for (const iterable of iterables) {
             yield* iterable;
         }
@@ -36,7 +38,7 @@ function concat(...iterables) {
 }
 exports.concat = concat;
 function keys(item) {
-    return new GeneratorIterable(function* () {
+    return defer(function* () {
         for (const key in item) {
             yield key;
         }
@@ -44,7 +46,7 @@ function keys(item) {
 }
 exports.keys = keys;
 function values(item) {
-    return new GeneratorIterable(function* () {
+    return defer(function* () {
         for (const key in item) {
             yield item[key];
         }

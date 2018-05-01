@@ -7,6 +7,10 @@ __export(require("./not"));
 __export(require("./and"));
 __export(require("./or"));
 __export(require("./xor"));
-function unit(value) { return value; }
-exports.unit = unit;
+function identity(value) { return value; }
+exports.identity = identity;
+function val(value) {
+    return (...args) => value;
+}
+exports.val = val;
 //# sourceMappingURL=operators.js.map
