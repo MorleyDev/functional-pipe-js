@@ -5,7 +5,7 @@ import { test } from "tap";
 test("iterable/generators", test => {
 	test.test("defer :: (() -> Iterable T) -> Iterable T", test => {
 		let executed = 0;
-		const gen = Generators.defer(function * () { executed = executed + 1; yield* [1, 2, 3]; });
+		const gen = Generators.defer(function* () { executed = executed + 1; yield* [1, 2, 3]; });
 		test.equals(executed, 0);
 		test.deepEquals(Array.from(gen), [1, 2, 3]);
 		test.equals(executed, 1);
@@ -152,5 +152,24 @@ test("iterable/generators", test => {
 		test.deepEquals(it.next(), { value: null, done: true });
 		test.end();
 	});
+
+	test.test("zip :: (...Iterable T) -> Iterable Array[T]", test => {
+		test.test("zip :: () -> Empty Iterable", test => {
+			const result = Array.from(Generators.zip());
+			test.deepEquals(result, []);
+			test.end();
+		});
+		test.test("zip :: (... Iterable [T, U]) -> Iterable [T, U]", test => {
+			const result = Array.from(Generators.zip([1, 2, 3, 4], ["a", "b", "c"], [2, 3, 4, 5]));
+			test.deepEquals(result, [
+				[1, "a", 2],
+				[2, "b", 3],
+				[3, "c", 4]
+			]);
+			test.end();
+		});
+		test.end();
+	})
+
 	test.end();
 });

@@ -111,3 +111,28 @@ export function values<T>(item: T): Iterable<T[keyof T]> {
 		}
 	});
 }
+
+export function zip<T1>(): Iterable<never>;
+export function zip<T1>(iterable1: Iterable<T1>): Iterable<[T1]>;
+export function zip<T1, T2>(iterables: Iterable<T1>, iterable2: Iterable<T2>): Iterable<[T1, T2]>;
+export function zip<T1, T2, T3>(iterables: Iterable<T1>, iterable2: Iterable<T2>, iterable3: Iterable<T3>): Iterable<[T1, T2, T3]>;
+export function zip<T1, T2, T3, T4>(iterables: Iterable<T1>, iterable2: Iterable<T2>, iterable3: Iterable<T3>, iterable4: Iterable<T4>): Iterable<[T1, T2, T3, T4]>;
+export function zip<T>(...iterables: Iterable<T>[]): Iterable<ReadonlyArray<T>> {
+	if (iterables.length == 0) {
+		return empty();
+	}
+	return defer(function* () {
+		const iterators = iterables.map(it => it[Symbol.iterator]());
+		function tick() {
+			const tick = iterators.map(it => it.next());
+			if (tick.some(t => t.done)) {
+				return undefined;
+			} else {
+				return tick.map(t => t.value);
+			}
+		}
+		for(let result = tick(); result != null; result = tick()) {
+			yield result;
+		}
+	});
+}

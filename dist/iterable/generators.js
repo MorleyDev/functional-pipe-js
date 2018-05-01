@@ -114,4 +114,25 @@ function values(item) {
     });
 }
 exports.values = values;
+function zip(...iterables) {
+    if (iterables.length == 0) {
+        return empty();
+    }
+    return defer(function* () {
+        const iterators = iterables.map(it => it[Symbol.iterator]());
+        function tick() {
+            const tick = iterators.map(it => it.next());
+            if (tick.some(t => t.done)) {
+                return undefined;
+            }
+            else {
+                return tick.map(t => t.value);
+            }
+        }
+        for (let result = tick(); result != null; result = tick()) {
+            yield result;
+        }
+    });
+}
+exports.zip = zip;
 //# sourceMappingURL=generators.js.map

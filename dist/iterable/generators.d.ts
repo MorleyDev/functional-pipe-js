@@ -15,3 +15,8 @@ export declare function empty(): Iterable<any>;
 export declare function concat<T>(...iterables: Iterable<T>[]): Iterable<T>;
 export declare function keys<T>(item: T): Iterable<string>;
 export declare function values<T>(item: T): Iterable<T[keyof T]>;
+export declare function zip<T1>(): Iterable<never>;
+export declare function zip<T1>(iterable1: Iterable<T1>): Iterable<[T1]>;
+export declare function zip<T1, T2>(iterables: Iterable<T1>, iterable2: Iterable<T2>): Iterable<[T1, T2]>;
+export declare function zip<T1, T2, T3>(iterables: Iterable<T1>, iterable2: Iterable<T2>, iterable3: Iterable<T3>): Iterable<[T1, T2, T3]>;
+export declare function zip<T1, T2, T3, T4>(iterables: Iterable<T1>, iterable2: Iterable<T2>, iterable3: Iterable<T3>, iterable4: Iterable<T4>): Iterable<[T1, T2, T3, T4]>;
