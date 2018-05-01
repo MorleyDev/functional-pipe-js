@@ -15,5 +15,13 @@ test.test("string/operators", test => {
 		});
 		test.end();
 	});
+
+	test.test("substr :: (StartIndex, Count) -> String -> String", test => {
+		test.equals(Strings.substr(0, 10)("abcdefghijklmnopqrstuvwxyz"), "abcdefghij");
+		test.equals(Strings.substr(0, 30)("abcdefghijklmnopqrstuvwxyz"), "abcdefghijklmnopqrstuvwxyz");
+		test.equals(Strings.substr(10, 10)("abcdefghijklmnopqrstuvwxyz"), "klmnopqrst");
+		test.equals(Strings.substr(30, 10)("abcdefghijklmnopqrstuvwxyz"), "");
+		test.end();
+	});
 	test.end();
 });

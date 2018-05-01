@@ -7,4 +7,8 @@ function flip(value) {
         .join("");
 }
 exports.flip = flip;
+function substr(startIndex, count) {
+    return value => value.substr(startIndex, count);
+}
+exports.substr = substr;
 //# sourceMappingURL=operators.js.map

@@ -12,10 +12,17 @@ test.test("project-euler", test => {
         .$(operators_1.scan(([prev, curr], _) => [curr, prev + curr], [0, 1]))
         .$$(operators_1.map(([_, x]) => x));
     const primes = () => pipe_1.$$(generators_1.infinite())
-        .$(operators_1.skip(4))
-        .$(operators_1.scan((previousPrimes, index) => previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index], [2, 3]))
-        .$(operators_1.takeWhile(e => e.length <= 6))
-        .$$(operators_1.map(primes => operators_1.last(primes)));
+        .$(operators_1.scan((previousPrimes, index) => {
+        switch (index) {
+            case 0: return [];
+            case 1: return [];
+            case 2: return [2];
+            default:
+                return previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index];
+        }
+    }, []))
+        .$(operators_1.map(primes => operators_1.last(primes)))
+        .$$(operators_1.distinctUntilChanged);
     const isPowerOf = (pow) => (x) => {
         for (let i = pow; i <= x; i = i * pow) {
             if (i === x) {
@@ -57,6 +64,11 @@ test.test("project-euler", test => {
             test.false(isPowerOf(3)(6));
             test.end();
         });
+        test.end();
+    });
+    test.test("primes", test => {
+        const first6Primes = pipe_1.$$(primes()).$(operators_1.take(6)).$$(operators_1.toArray);
+        test.deepEquals(first6Primes, [2, 3, 5, 7, 11, 13]);
         test.end();
     });
     test.test("#1 Find the sum of all the multiples of 3 or 5 below 1000", test => {
@@ -120,21 +132,19 @@ test.test("project-euler", test => {
         test.end();
     });
     test.test("#7 What is the 10001st prime number?", test => {
-        const result = pipe_1.$$(generators_1.infinite())
-            .$(operators_1.scan((previousPrimes, index) => {
-            switch (index) {
-                case 0: return [];
-                case 1: return [];
-                case 2: return [2];
-                default:
-                    return previousPrimes.some(prime => index % prime === 0) ? previousPrimes : [...previousPrimes, index];
-            }
-        }, []))
-            .$(operators_1.map(primes => operators_1.last(primes)))
-            .$(operators_1.distinctUntilChanged)
+        const result = pipe_1.$$(primes())
             .$(operators_1.skip(10000))
             .$$(operators_1.first);
         test.deepEquals(result, 104743);
+        test.end();
+    });
+    test.test("#8 find the thirteen adjacent digits in the 1000-digit number with the greatest product", test => {
+        const digits = `7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843858615607891129494954595017379583319528532088055111254069874715852386305071569329096329522744304355766896648950445244523161731856403098711121722383113622298934233803081353362766142828064444866452387493035890729629049156044077239071381051585930796086670172427121883998797908792274921901699720888093776657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450`;
+        const product = (val) => val.split("").map(x => parseInt(x, 10)).reduce((p, c) => p * c);
+        const largestProduct = pipe_1.$$(generators_1.range(0, digits.length - 13))
+            .$(operators_1.map((index) => pipe_1.$$(digits).$(Strings.substr(index, 13)).$$(product)))
+            .$$(operators_1.fold((p, c) => p > c ? p : c));
+        test.equals(largestProduct, 5832);
         test.end();
     });
     test.end();
