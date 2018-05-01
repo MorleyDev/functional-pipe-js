@@ -69,8 +69,8 @@ test.test("project-euler", test => {
         test.end();
     });
     test.test("#4 find the largest palindrome made from the product of two 3-digit numbers", test => {
-        const result = pipe_1.$$(generators_1.range(100, 900)).$(operators_1.map(x => 1000 - x))
-            .$(operators_1.flatMap(lhs => pipe_1.$$(generators_1.range(100, 900)).$(operators_1.map(x => 1000 - x)).$$(operators_1.map(rhs => lhs * rhs))))
+        const result = pipe_1.$$(generators_1.range(100, 900))
+            .$(operators_1.flatMap(lhs => pipe_1.$$(generators_1.range(100, 900)).$$(operators_1.map(rhs => lhs * rhs))))
             .$(operators_1.filter(x => x.toString() === Strings.flip(x.toString())))
             .$$(operators_1.fold((x, y) => x > y ? x : y));
         test.equals(result, 906609);
