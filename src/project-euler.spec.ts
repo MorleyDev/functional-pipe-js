@@ -2,30 +2,13 @@ import * as Strings from "./string/operators";
 import * as test from "tap";
 
 import { distinctUntilChanged, every, filter, first, flatMap, fold, last, map, scan, skip, some, take, takeUntil, takeWhile, tap, toArray } from "./iterable/operators";
-import { infinite, range } from "./iterable/generators";
+import { fibonacci, infinite, primes, range } from "./iterable/generators";
 
 import { $$ } from "./pipe";
 import { not } from "./function/operators";
 
 test.test("project-euler", test => {
 	const isPrime = (x: number) => x === 2 || $$(range(2, Math.sqrt(x) | 0)).$$(every(y => x % y !== 0));
-	const fibonacci = () => $$(infinite())
-		.$(scan(([prev, curr], _) => [curr, prev + curr], [0, 1]))
-		.$$(map(([_, x]) => x));
-
-	const primes = () => $$(infinite())
-		.$(scan((previousPrimes, index) => {
-			switch (index) {
-				case 0: return [];
-				case 1: return [];
-				case 2: return [2];
-				default:
-					return $$(previousPrimes).$(take(Math.sqrt(index) | 0)).$$(some(prime => index % prime === 0)) ? previousPrimes : [...previousPrimes, index];
-			}
-		}, [] as number[]))
-		.$(map(primes => last(primes)!))
-		.$$(distinctUntilChanged);
-
 	const isPowerOf = (pow: number) => (x: number) => {
 		for (let i = pow; i <= x; i = i * pow) {
 			if (i === x) {
@@ -46,13 +29,6 @@ test.test("project-euler", test => {
 			test.false(isPrime(82));
 			test.end();
 		});
-		test.test("fibonacci", test => {
-			const firstTen = $$(fibonacci())
-				.$(take(10))
-				.$$(toArray);
-			test.deepEquals(firstTen, [1, 2, 3, 5, 8, 13, 21, 34, 55, 89])
-			test.end();
-		});
 		test.test("isPowerOf", test => {
 			test.true(isPowerOf(2)(2));
 			test.true(isPowerOf(2)(4));
@@ -70,11 +46,6 @@ test.test("project-euler", test => {
 		});
 		test.end();
 	});
-	test.test("primes", test => {
-		const first6Primes = $$(primes()).$(take(6)).$$(toArray);
-		test.deepEquals(first6Primes, [2, 3, 5, 7, 11, 13]);
-		test.end();
-	})
 
 	test.test("#1 Find the sum of all the multiples of 3 or 5 below 1000", test => {
 		const result = $$(range(1, 999))
@@ -114,13 +85,13 @@ test.test("project-euler", test => {
 	});
 	test.test("#5 what is the smallest positive number that is evenly divisible by all numbers from 1 to 20", test => {
 		function smallestDivisible(count: number) {
-			const primes = $$(range(2, count - 2)).$(filter(isPrime)).$$(toArray);
+			const primesBelowCount = toArray(primes(count));
 			const composites = $$(range(1, count)).$(filter(not(isPrime))).$$(toArray);
-			const highestExponents = primes
+			const highestExponents = primesBelowCount
 				.map(prime => composites.reduce(([prime, prev], curr) => isPowerOf(prime)(curr) ? [prime, curr] : [prime, prev], [prime, 0]))
 				.filter(([_, i]) => i > 0);
 
-			const finalSet = primes.map(prime => {
+			const finalSet = primesBelowCount.map(prime => {
 				const exp = highestExponents.find(([p, ep]) => p === prime);
 				return exp != null ? exp[1] : prime;
 			});
@@ -145,7 +116,7 @@ test.test("project-euler", test => {
 		test.end();
 	});
 	test.test("#7 What is the 10001st prime number?", test => {
-		const result = $$(primes())
+		const result = $$(primes(200000)) /*we know it's below 200000*/
 			.$(skip(10000))
 			.$$(first);
 
@@ -176,15 +147,7 @@ test.test("project-euler", test => {
 		test.end();
 	})
 	test.test("#10 find the sum of primes below two million", test => {
-		// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-		let set = toArray(range(2, 2000000 - 1));
-		let curr = 2;
-		while (curr <= Math.sqrt(2000000)) {
-			set = set.filter(s => s === curr || s % curr !== 0);
-			curr = set.find(s => s > curr)!;
-		}
-
-		const result = $$(set).$$(fold((prev, curr) => prev + curr));
+		const result = $$(primes(2000000)).$$(fold((prev, curr) => prev + curr));
 		test.equals(result, 142913828922);
 		test.end();
 	});

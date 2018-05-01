@@ -8,21 +8,6 @@ const pipe_1 = require("./pipe");
 const operators_2 = require("./function/operators");
 test.test("project-euler", test => {
     const isPrime = (x) => x === 2 || pipe_1.$$(generators_1.range(2, Math.sqrt(x) | 0)).$$(operators_1.every(y => x % y !== 0));
-    const fibonacci = () => pipe_1.$$(generators_1.infinite())
-        .$(operators_1.scan(([prev, curr], _) => [curr, prev + curr], [0, 1]))
-        .$$(operators_1.map(([_, x]) => x));
-    const primes = () => pipe_1.$$(generators_1.infinite())
-        .$(operators_1.scan((previousPrimes, index) => {
-        switch (index) {
-            case 0: return [];
-            case 1: return [];
-            case 2: return [2];
-            default:
-                return pipe_1.$$(previousPrimes).$(operators_1.take(Math.sqrt(index) | 0)).$$(operators_1.some(prime => index % prime === 0)) ? previousPrimes : [...previousPrimes, index];
-        }
-    }, []))
-        .$(operators_1.map(primes => operators_1.last(primes)))
-        .$$(operators_1.distinctUntilChanged);
     const isPowerOf = (pow) => (x) => {
         for (let i = pow; i <= x; i = i * pow) {
             if (i === x) {
@@ -42,13 +27,6 @@ test.test("project-euler", test => {
             test.false(isPrime(82));
             test.end();
         });
-        test.test("fibonacci", test => {
-            const firstTen = pipe_1.$$(fibonacci())
-                .$(operators_1.take(10))
-                .$$(operators_1.toArray);
-            test.deepEquals(firstTen, [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]);
-            test.end();
-        });
         test.test("isPowerOf", test => {
             test.true(isPowerOf(2)(2));
             test.true(isPowerOf(2)(4));
@@ -66,11 +44,6 @@ test.test("project-euler", test => {
         });
         test.end();
     });
-    test.test("primes", test => {
-        const first6Primes = pipe_1.$$(primes()).$(operators_1.take(6)).$$(operators_1.toArray);
-        test.deepEquals(first6Primes, [2, 3, 5, 7, 11, 13]);
-        test.end();
-    });
     test.test("#1 Find the sum of all the multiples of 3 or 5 below 1000", test => {
         const result = pipe_1.$$(generators_1.range(1, 999))
             .$(operators_1.filter(x => x % 3 === 0 || x % 5 === 0))
@@ -79,7 +52,7 @@ test.test("project-euler", test => {
         test.end();
     });
     test.test("#2 find the sum of the even-valued terms of the fibonacci sequence below 4 million", test => {
-        const result = pipe_1.$$(fibonacci())
+        const result = pipe_1.$$(generators_1.fibonacci())
             .$(operators_1.filter(x => x % 2 == 0))
             .$(operators_1.takeWhile(x => x < 4000000))
             .$$(operators_1.fold((x, y) => x + y));
@@ -96,8 +69,8 @@ test.test("project-euler", test => {
         test.end();
     });
     test.test("#4 find the largest palindrome made from the product of two 3-digit numbers", test => {
-        const result = pipe_1.$$(generators_1.range(100, 900))
-            .$(operators_1.flatMap(lhs => pipe_1.$$(generators_1.range(100, 900)).$$(operators_1.map(rhs => lhs * rhs))))
+        const result = pipe_1.$$(generators_1.range(100, 900)).$(operators_1.map(x => 1000 - x))
+            .$(operators_1.flatMap(lhs => pipe_1.$$(generators_1.range(100, 900)).$(operators_1.map(x => 1000 - x)).$$(operators_1.map(rhs => lhs * rhs))))
             .$(operators_1.filter(x => x.toString() === Strings.flip(x.toString())))
             .$$(operators_1.fold((x, y) => x > y ? x : y));
         test.equals(result, 906609);
@@ -105,12 +78,12 @@ test.test("project-euler", test => {
     });
     test.test("#5 what is the smallest positive number that is evenly divisible by all numbers from 1 to 20", test => {
         function smallestDivisible(count) {
-            const primes = pipe_1.$$(generators_1.range(2, count - 2)).$(operators_1.filter(isPrime)).$$(operators_1.toArray);
+            const primesBelowCount = operators_1.toArray(generators_1.primes(count));
             const composites = pipe_1.$$(generators_1.range(1, count)).$(operators_1.filter(operators_2.not(isPrime))).$$(operators_1.toArray);
-            const highestExponents = primes
+            const highestExponents = primesBelowCount
                 .map(prime => composites.reduce(([prime, prev], curr) => isPowerOf(prime)(curr) ? [prime, curr] : [prime, prev], [prime, 0]))
                 .filter(([_, i]) => i > 0);
-            const finalSet = primes.map(prime => {
+            const finalSet = primesBelowCount.map(prime => {
                 const exp = highestExponents.find(([p, ep]) => p === prime);
                 return exp != null ? exp[1] : prime;
             });
@@ -132,7 +105,7 @@ test.test("project-euler", test => {
         test.end();
     });
     test.test("#7 What is the 10001st prime number?", test => {
-        const result = pipe_1.$$(primes())
+        const result = pipe_1.$$(generators_1.primes(200000)) /*we know it's below 200000*/
             .$(operators_1.skip(10000))
             .$$(operators_1.first);
         test.deepEquals(result, 104743);
@@ -160,14 +133,7 @@ test.test("project-euler", test => {
         test.end();
     });
     test.test("#10 find the sum of primes below two million", test => {
-        // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-        let set = operators_1.toArray(generators_1.range(2, 2000000 - 1));
-        let curr = 2;
-        while (curr <= Math.sqrt(2000000)) {
-            set = set.filter(s => s === curr || s % curr !== 0);
-            curr = set.find(s => s > curr);
-        }
-        const result = pipe_1.$$(set).$$(operators_1.fold((prev, curr) => prev + curr));
+        const result = pipe_1.$$(generators_1.primes(2000000)).$$(operators_1.fold((prev, curr) => prev + curr));
         test.equals(result, 142913828922);
         test.end();
     });

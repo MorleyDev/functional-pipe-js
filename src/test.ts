@@ -28,6 +28,6 @@ function findTestsIn(path: string): string[] {
 		.map(item => item.stat.isDirectory() ? findTestsIn(item.fullpath) : item.fullpath)
 		.map(item => Array.isArray(item) ? item : [item])
 		.reduce((prev, curr) => prev.concat(curr), [])
-		.filter(item => filter(item))
+		.filter(item => filter(item.replace(/\\/g, "/")))
 		.filter(item => item.match(/^.+\.spec\.(j|t)sx?$/));
 }
