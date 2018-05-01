@@ -67,11 +67,11 @@ test.test("project-euler", test => {
 		test.end();
 	});
 	test.test("#2 find the sum of the even-valued terms of the fibonacci sequence below 4 million", test => {
-
 		const result = $$(fibonacci())
 			.$(filter(x => x % 2 == 0))
 			.$(takeWhile(x => x < 4000000))
 			.$$(fold((x, y) => x + y));
+
 		test.equal(result, 4613732);
 		test.end();
 	});
@@ -98,7 +98,6 @@ test.test("project-euler", test => {
 
 		function smallestDivisible(count: number) {
 			const primes = $$(range(2, count - 2)).$(filter(isPrime)).$$(toArray);
-			console.log(primes);
 			const composites = $$(range(1, count)).$(filter(not(isPrime))).$$(toArray);
 			const highestExponents = primes
 				.map(prime => composites.reduce(([prime, prev], curr) => isPowerOf(prime)(curr) ? [prime, curr] : [prime, prev], [prime, 0]))
@@ -108,12 +107,24 @@ test.test("project-euler", test => {
 				const exp = highestExponents.find(([p, ep]) => p === prime);
 				return exp != null ? exp[1] : prime;
 			});
-			console.log(finalSet);
 			return finalSet.reduce((p, c) => p * c);
 		}
 
 		test.equals(smallestDivisible(10), 2520);
 		test.equals(smallestDivisible(20), 232792560);
+		test.end();
+	});
+	test.test("#6 find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum", test => {
+		const sumOfSquares = $$(range(1, 100))
+			.$(map(x => x ** 2))
+			.$$(fold((l, r) => l + r));
+
+		const squareOfSums = $$(range(1, 100))
+			.$(fold((l, r) => l + r))
+			.$$(sum => sum ** 2);
+
+		const result = Math.abs(sumOfSquares - squareOfSums);
+		test.equals(result, 25164150);
 		test.end();
 	});
 	test.end();

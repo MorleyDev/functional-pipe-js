@@ -89,7 +89,6 @@ test.test("project-euler", test => {
     test.test("#5 what is the smallest positive number that is evenly divisible by all numbers from 1 to 20", test => {
         function smallestDivisible(count) {
             const primes = pipe_1.$$(generators_1.range(2, count - 2)).$(operators_1.filter(isPrime)).$$(operators_1.toArray);
-            console.log(primes);
             const composites = pipe_1.$$(generators_1.range(1, count)).$(operators_1.filter(operators_2.not(isPrime))).$$(operators_1.toArray);
             const highestExponents = primes
                 .map(prime => composites.reduce(([prime, prev], curr) => isPowerOf(prime)(curr) ? [prime, curr] : [prime, prev], [prime, 0]))
@@ -98,11 +97,22 @@ test.test("project-euler", test => {
                 const exp = highestExponents.find(([p, ep]) => p === prime);
                 return exp != null ? exp[1] : prime;
             });
-            console.log(finalSet);
             return finalSet.reduce((p, c) => p * c);
         }
         test.equals(smallestDivisible(10), 2520);
         test.equals(smallestDivisible(20), 232792560);
+        test.end();
+    });
+    test.test("#6 find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum", test => {
+        const sumOfSquares = pipe_1.$$(generators_1.range(1, 100))
+            .$(operators_1.map(x => x ** 2))
+            .$$(operators_1.fold((l, r) => l + r));
+        const squareOfSums = pipe_1.$$(generators_1.range(1, 100))
+            .$(operators_1.fold((l, r) => l + r))
+            .$$(sum => sum ** 2);
+        const result = Math.abs(sumOfSquares - squareOfSums);
+        test.equals(result, 2640);
+        test.equals(result, 2640);
         test.end();
     });
     test.end();
