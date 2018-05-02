@@ -81,8 +81,8 @@ export function scan<T, U>(predicate: (prev: U, next: T, index: number) => U, in
 }
 
 /** Reduce the items in an iterable down to a single instance of the same type as the type contained by that Iterable */
-export function fold<T>(predicate: (prev: T, next: T, index: number) => T): (it: Iterable<T>) => T {
-	return function (iterable: Iterable<T>): T {
+export function fold<T>(predicate: (prev: T, next: T, index: number) => T): (it: Iterable<T>) => T | undefined {
+	return function (iterable) {
 		let index = 0;
 		let prevState: T | undefined;
 		for (const value of iterable) {
@@ -93,7 +93,7 @@ export function fold<T>(predicate: (prev: T, next: T, index: number) => T): (it:
 			}
 			index = index + 1;
 		}
-		return prevState!;
+		return prevState;
 	};
 }
 

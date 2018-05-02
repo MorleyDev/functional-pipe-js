@@ -13,7 +13,7 @@ export declare function reduce<T, U>(predicate: (prev: U, next: T, index: number
 /** Reduce the items in an iterable down to a single instance of initial type, yielding each step of the reduction */
 export declare function scan<T, U>(predicate: (prev: U, next: T, index: number) => U, initial: U): (it: Iterable<T>) => Iterable<U>;
 /** Reduce the items in an iterable down to a single instance of the same type as the type contained by that Iterable */
-export declare function fold<T>(predicate: (prev: T, next: T, index: number) => T): (it: Iterable<T>) => T;
+export declare function fold<T>(predicate: (prev: T, next: T, index: number) => T): (it: Iterable<T>) => T | undefined;
 /** Take and yield the first N items in an iterable sequence */
 export declare function take(count: number): <T>(iterable: Iterable<T>) => Iterable<T>;
 /** Take only the last N items in an iterable sequence */

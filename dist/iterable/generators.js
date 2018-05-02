@@ -70,7 +70,6 @@ function primes(limit) {
             }
             yield curr;
             yield* set.slice(lastIndex + 1);
-            //			yield* set;
         });
     }
     return defer(function* () {
