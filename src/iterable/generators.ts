@@ -20,9 +20,9 @@ export function range(start: number, count: number, inc: number = 1): Iterable<n
 }
 
 /** Yields an infinite sequence of numbers starting at 0 */
-export function infinite(): Iterable<number> {
+export function infinite(startIndex: number = 0): Iterable<number> {
 	return defer(function* () {
-		for (let i = 0; ; ++i) {
+		for (let i = startIndex; ; ++i) {
 			yield i;
 		}
 	});

@@ -23,9 +23,9 @@ function range(start, count, inc = 1) {
 }
 exports.range = range;
 /** Yields an infinite sequence of numbers starting at 0 */
-function infinite() {
+function infinite(startIndex = 0) {
     return defer(function* () {
-        for (let i = 0;; ++i) {
+        for (let i = startIndex;; ++i) {
             yield i;
         }
     });

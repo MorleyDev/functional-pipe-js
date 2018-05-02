@@ -431,3 +431,12 @@ export function removeAt<T>(index: number): (source: AsyncIterable<T>) => AsyncI
 		}
 	}
 }
+
+/** Returns a promise of the count of items returned by evaluating the provided iterable */
+export async function count<T>(source: AsyncIterable<T>): Promise<number> {
+	let i = 0;
+	for await (const it of source) {
+		++i;
+	}
+	return i;
+}

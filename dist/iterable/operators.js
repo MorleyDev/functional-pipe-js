@@ -457,4 +457,13 @@ function removeAt(index) {
     };
 }
 exports.removeAt = removeAt;
+/** Returns the count of items returned by evaluating the provided iterable */
+function count(it) {
+    let i = 0;
+    for (const _ of it) {
+        ++i;
+    }
+    return i;
+}
+exports.count = count;
 //# sourceMappingURL=operators.js.map

@@ -70,3 +70,5 @@ export declare function toArray<T>(iterable: Iterable<T>): ReadonlyArray<T>;
 export declare function updateAt<T>(index: number, value: T): (source: Iterable<T>) => Iterable<T>;
 /** Returns a new iterable set that does not have the element at index */
 export declare function removeAt<T>(index: number): (source: Iterable<T>) => Iterable<T>;
+/** Returns the count of items returned by evaluating the provided iterable */
+export declare function count<T>(it: Iterable<T>): number;

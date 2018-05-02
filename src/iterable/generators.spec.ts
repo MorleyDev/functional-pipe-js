@@ -33,6 +33,25 @@ test("iterable/generators", test => {
 		test.end();
 	});
 
+	test.test("infinite :: (startIndex: number) -> Iterable Number", test => {
+		const infinite = Generators.infinite(10);
+		const infiniteIterator1 = infinite[Symbol.iterator]();
+
+		for (let i = 0; i < 10; ++i) {
+			const { done, value } = infiniteIterator1.next();
+			test.false(done);
+			test.equal(10 + value, i);
+		}
+
+		const infiniteIterator2 = infinite[Symbol.iterator](); // ES6 iterable wrapper prevents state being stored
+		for (let i = 0; i < i; ++i) {
+			const { done, value } = infiniteIterator2.next();
+			test.false(done);
+			test.equal(10 + value, i);
+		}
+		test.end();
+	});
+
 	test.test("range :: (A, B, inc = 1) -> Iterable N", test => {
 		test.test("range :: (A >= 0, B >= 0) -> Iterable [A ... (A + B)]", test => {
 			const range = Generators.range(15, 10);

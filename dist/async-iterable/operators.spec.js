@@ -426,6 +426,11 @@ tap_1.test("async-iterable/operators", async (test) => {
         });
         test.end();
     });
+    test.test("count :: Iterable T -> Number", test => {
+        test.equals(Operators.count(Generators.from([])), 0);
+        test.equals(Operators.count(Generators.from([1, 4, 5, 6, 7])), 5);
+        test.end();
+    });
     test.end();
 });
 //# sourceMappingURL=operators.spec.js.map

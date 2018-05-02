@@ -868,4 +868,24 @@ function removeAt(index) {
     };
 }
 exports.removeAt = removeAt;
+/** Returns a promise of the count of items returned by evaluating the provided iterable */
+async function count(source) {
+    let i = 0;
+    try {
+        for (var source_4 = __asyncValues(source), source_4_1; source_4_1 = await source_4.next(), !source_4_1.done;) {
+            const it = await source_4_1.value;
+            ++i;
+        }
+    }
+    catch (e_33_1) { e_33 = { error: e_33_1 }; }
+    finally {
+        try {
+            if (source_4_1 && !source_4_1.done && (_a = source_4.return)) await _a.call(source_4);
+        }
+        finally { if (e_33) throw e_33.error; }
+    }
+    return i;
+    var e_33, _a;
+}
+exports.count = count;
 //# sourceMappingURL=operators.js.map

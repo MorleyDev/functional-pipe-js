@@ -377,5 +377,11 @@ test("iterable/operators", test => {
 		test.end();
 	});
 
+	test.test("count :: Iterable T -> Number", test => {
+		test.equals(Operators.count([]), 0);
+		test.equals(Operators.count([1, 4, 5, 6, 7]), 5);
+		test.end();
+	});
+
 	test.end();
 });

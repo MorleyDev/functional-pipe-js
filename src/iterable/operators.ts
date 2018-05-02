@@ -446,3 +446,12 @@ export function removeAt<T>(index: number): (source: Iterable<T>) => Iterable<T>
 		}
 	}
 }
+
+/** Returns the count of items returned by evaluating the provided iterable */
+export function count<T>(it: Iterable<T>): number {
+	let i = 0;
+	for (const _ of it) {
+		++i;
+	}
+	return i;
+}

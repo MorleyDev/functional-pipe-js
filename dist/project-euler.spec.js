@@ -16,6 +16,16 @@ test.test("project-euler", test => {
         }
         return false;
     };
+    const powersOf = (x) => pipe_1.$$(generators_1.infinite()).$$(operators_1.scan((p, _) => p * x, 1));
+    const primeFactorsOf = (x) => pipe_1.$$(generators_1.primes(x - 1)).$$(operators_1.filter(p => x % p == 0));
+    const factorsOf = (x) => pipe_1.$$(primeFactorsOf(x))
+        .$(operators_1.flatMap(pf => pipe_1.$$(generators_1.infinite())
+        .$(operators_1.map(i => pf * (i + 1)))
+        .$(operators_1.takeWhile(pf => pf < x))
+        .$$(operators_1.filter(pf => x % pf === 0))))
+        .$(operators_1.distinct)
+        .$(operators_1.push(x))
+        .$$(operators_1.unshift(1));
     test.test("utilities", test => {
         test.test("isPrime", test => {
             test.true(isPrime(2));
@@ -40,6 +50,23 @@ test.test("project-euler", test => {
             test.false(isPowerOf(3)(26));
             test.false(isPowerOf(3)(24));
             test.false(isPowerOf(3)(6));
+            test.end();
+        });
+        test.test("powersOf", test => {
+            test.deepEquals(pipe_1.$$(powersOf(2)).$(operators_1.take(5)).$$(operators_1.toArray), [2, 4, 8, 16, 32]);
+            test.deepEquals(pipe_1.$$(powersOf(3)).$(operators_1.take(5)).$$(operators_1.toArray), [3, 9, 27, 81, 243]);
+            test.end();
+        });
+        test.test("primeFactorsOf", test => {
+            test.deepEquals(pipe_1.$$(primeFactorsOf(20)).$$(operators_1.toArray), [2, 5]);
+            test.deepEquals(pipe_1.$$(primeFactorsOf(21)).$$(operators_1.toArray), [3, 7]);
+            test.deepEquals(pipe_1.$$(primeFactorsOf(84)).$$(operators_1.toArray), [2, 3, 7]);
+            test.deepEquals(pipe_1.$$(primeFactorsOf(5)).$$(operators_1.toArray).length, 0);
+            test.end();
+        });
+        test.test("factorsOf", test => {
+            test.deepEquals(pipe_1.$$(factorsOf(20)).$(operators_1.orderBy(x => x)).$$(operators_1.toArray), [1, 2, 4, 5, 10, 20]);
+            test.deepEquals(pipe_1.$$(factorsOf(5)).$(operators_1.orderBy(x => x)).$$(operators_1.toArray), [1, 5]);
             test.end();
         });
         test.end();
@@ -185,8 +212,10 @@ test.test("project-euler", test => {
             .$(operators_1.map(({ x, y }) => grid[x][y]))
             .$$(operators_1.reduce((p, v) => p * v, 1))));
         const max = pipe_1.$$(generators_1.concat(horizSet, vertSet, bdiagSet, fdiagSet)).$$(operators_1.reduce((p, c) => p < c ? c : p, 0));
-        test.equals(max, 0);
+        test.equals(max, 70600674);
         test.end();
+    });
+    test.test("#12 find the value of the first triangle number to have over five hundred divisors", test => {
     });
     test.end();
 });

@@ -68,3 +68,5 @@ export declare function toWriteableArray<T>(iterable: AsyncIterable<T>): Promise
 export declare function updateAt<T>(index: number, value: T): (source: AsyncIterable<T>) => AsyncIterable<T>;
 /** Returns a new iterable set that does not have the element at index */
 export declare function removeAt<T>(index: number): (source: AsyncIterable<T>) => AsyncIterable<T>;
+/** Returns a promise of the count of items returned by evaluating the provided iterable */
+export declare function count<T>(source: AsyncIterable<T>): Promise<number>;

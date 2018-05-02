@@ -2,7 +2,7 @@ import * as Strings from "./string/operators";
 import * as test from "tap";
 
 import { concat, fibonacci, infinite, primes, range } from "./iterable/generators";
-import { distinctUntilChanged, every, filter, first, flatMap, fold, last, map, reduce, scan, skip, some, take, takeUntil, takeWhile, tap, toArray } from "./iterable/operators";
+import { count, distinct, distinctUntilChanged, every, filter, first, flatMap, fold, last, map, orderBy, push, reduce, scan, skip, skipWhile, some, take, takeUntil, takeWhile, tap, toArray, unshift } from "./iterable/operators";
 
 import { $$ } from "./pipe";
 import { not } from "./function/operators";
@@ -17,6 +17,17 @@ test.test("project-euler", test => {
 		}
 		return false;
 	}
+
+	const powersOf = (x: number) => $$(infinite()).$$(scan((p, _) => p * x, 1));
+	const primeFactorsOf = (x: number) => $$(primes(x - 1)).$$(filter(p => x % p == 0));
+	const factorsOf = (x: number) => $$(primeFactorsOf(x))
+		.$(flatMap(pf => $$(infinite())
+			.$(map(i => pf * (i + 1)))
+			.$(takeWhile(pf => pf < x))
+			.$$(filter(pf => x % pf === 0))))
+		.$(distinct)
+		.$(push(x))
+		.$$(unshift(1));
 
 	test.test("utilities", test => {
 		test.test("isPrime", test => {
@@ -44,6 +55,24 @@ test.test("project-euler", test => {
 			test.false(isPowerOf(3)(6));
 			test.end();
 		});
+		test.test("powersOf", test => {
+			test.deepEquals($$(powersOf(2)).$(take(5)).$$(toArray), [2, 4, 8, 16, 32]);
+			test.deepEquals($$(powersOf(3)).$(take(5)).$$(toArray), [3, 9, 27, 81, 243]);
+			test.end();
+		});
+		test.test("primeFactorsOf", test => {
+			test.deepEquals($$(primeFactorsOf(20)).$$(toArray), [2, 5]);
+			test.deepEquals($$(primeFactorsOf(21)).$$(toArray), [3, 7]);
+			test.deepEquals($$(primeFactorsOf(84)).$$(toArray), [2, 3, 7]);
+			test.deepEquals($$(primeFactorsOf(5)).$$(toArray).length, 0);
+			test.end();
+		});
+		test.test("factorsOf", test => {
+			test.deepEquals($$(factorsOf(20)).$(orderBy(x => x)).$$(toArray), [1, 2, 4, 5, 10, 20]);
+			test.deepEquals($$(factorsOf(5)).$(orderBy(x => x)).$$(toArray), [1, 5]);
+			test.end();
+		});
+
 		test.end();
 	});
 
@@ -203,7 +232,7 @@ test.test("project-euler", test => {
 				.$(map(i => ({ x: x + i, y: y - i })))
 				.$(map(({ x, y }) => grid[x][y]))
 				.$$(reduce((p, v) => p * v, 1))));
-		
+
 		const max = $$(concat(horizSet, vertSet, bdiagSet, fdiagSet)).$$(reduce((p, c) => p < c ? c : p, 0));
 
 		test.equals(max, 70600674);
