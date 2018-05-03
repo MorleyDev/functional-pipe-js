@@ -25,7 +25,7 @@ test("iterable/generators", test => {
 		}
 
 		const infiniteIterator2 = infinite[Symbol.iterator](); // ES6 iterable wrapper prevents state being stored
-		for (let i = 0; i < i; ++i) {
+		for (let i = 0; i < 10; ++i) {
 			const { done, value } = infiniteIterator2.next();
 			test.false(done);
 			test.equal(value, i);
@@ -40,14 +40,14 @@ test("iterable/generators", test => {
 		for (let i = 0; i < 10; ++i) {
 			const { done, value } = infiniteIterator1.next();
 			test.false(done);
-			test.equal(10 + value, i);
+			test.equal(value, 10 + i);
 		}
 
 		const infiniteIterator2 = infinite[Symbol.iterator](); // ES6 iterable wrapper prevents state being stored
-		for (let i = 0; i < i; ++i) {
+		for (let i = 0; i < 10; ++i) {
 			const { done, value } = infiniteIterator2.next();
 			test.false(done);
-			test.equal(10 + value, i);
+			test.equal(value, 10 + i);
 		}
 		test.end();
 	});

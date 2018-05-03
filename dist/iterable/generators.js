@@ -61,7 +61,7 @@ function primes(limit) {
             let lastIndex = 0;
             while (curr <= sqrtLimit) {
                 yield curr;
-                set = set.filter(s => s === curr || s % curr !== 0);
+                set = set.splice(0, lastIndex).concat(set.splice(lastIndex + 1).filter(s => s % curr !== 0));
                 lastIndex = set.findIndex(s => s > curr);
                 if (lastIndex == null) {
                     return;

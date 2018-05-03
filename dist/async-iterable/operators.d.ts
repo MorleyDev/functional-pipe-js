@@ -70,3 +70,5 @@ export declare function updateAt<T>(index: number, value: T): (source: AsyncIter
 export declare function removeAt<T>(index: number): (source: AsyncIterable<T>) => AsyncIterable<T>;
 /** Returns a promise of the count of items returned by evaluating the provided iterable */
 export declare function count<T>(source: AsyncIterable<T>): Promise<number>;
+/** Returns a promise of true if evaluating the iterable gives any items, false otherwise */
+export declare function empty<T>(source: AsyncIterable<T>): Promise<boolean>;

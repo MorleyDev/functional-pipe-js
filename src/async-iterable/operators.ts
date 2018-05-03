@@ -440,3 +440,13 @@ export async function count<T>(source: AsyncIterable<T>): Promise<number> {
 	}
 	return i;
 }
+
+
+/** Returns a promise of true if evaluating the iterable gives any items, false otherwise */
+export async function empty<T>(source: AsyncIterable<T>): Promise<boolean> {
+	let i = 0;
+	for await (const it of source) {
+		return false;
+	}
+	return true;
+}

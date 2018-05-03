@@ -72,3 +72,5 @@ export declare function updateAt<T>(index: number, value: T): (source: Iterable<
 export declare function removeAt<T>(index: number): (source: Iterable<T>) => Iterable<T>;
 /** Returns the count of items returned by evaluating the provided iterable */
 export declare function count<T>(it: Iterable<T>): number;
+/** Returns the false if evaluating the iterable gives any items, true if it is empty */
+export declare function empty<T>(it: Iterable<T>): boolean;

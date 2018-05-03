@@ -60,7 +60,7 @@ export function primes(limit?: number): Iterable<number> {
 			let lastIndex = 0;
 			while (curr <= sqrtLimit) {
 				yield curr;
-				set = set.filter(s => s === curr || s % curr !== 0);
+				set = set.splice(0, lastIndex).concat(set.splice(lastIndex + 1).filter(s => s % curr !== 0));
 				lastIndex = set.findIndex(s => s > curr)!;
 				if (lastIndex == null) {
 					return;
@@ -140,7 +140,7 @@ export function zip<T>(...iterables: Iterable<T>[]): Iterable<ReadonlyArray<T>> 
 				return tick.map(t => t.value);
 			}
 		}
-		for(let result = tick(); result != null; result = tick()) {
+		for (let result = tick(); result != null; result = tick()) {
 			yield result;
 		}
 	});

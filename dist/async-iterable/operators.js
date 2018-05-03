@@ -888,4 +888,24 @@ async function count(source) {
     var e_33, _a;
 }
 exports.count = count;
+/** Returns a promise of true if evaluating the iterable gives any items, false otherwise */
+async function empty(source) {
+    let i = 0;
+    try {
+        for (var source_5 = __asyncValues(source), source_5_1; source_5_1 = await source_5.next(), !source_5_1.done;) {
+            const it = await source_5_1.value;
+            return false;
+        }
+    }
+    catch (e_34_1) { e_34 = { error: e_34_1 }; }
+    finally {
+        try {
+            if (source_5_1 && !source_5_1.done && (_a = source_5.return)) await _a.call(source_5);
+        }
+        finally { if (e_34) throw e_34.error; }
+    }
+    return true;
+    var e_34, _a;
+}
+exports.empty = empty;
 //# sourceMappingURL=operators.js.map

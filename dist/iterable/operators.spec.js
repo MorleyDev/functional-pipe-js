@@ -365,6 +365,11 @@ tap_1.test("iterable/operators", test => {
         test.equals(Operators.count([1, 4, 5, 6, 7]), 5);
         test.end();
     });
+    test.test("empty :: Iterable T -> Boolean", test => {
+        test.true(Operators.empty([]));
+        test.false(Operators.empty([1, 4, 5, 6, 7]));
+        test.end();
+    });
     test.end();
 });
 //# sourceMappingURL=operators.spec.js.map

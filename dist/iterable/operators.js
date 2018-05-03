@@ -466,4 +466,13 @@ function count(it) {
     return i;
 }
 exports.count = count;
+/** Returns the false if evaluating the iterable gives any items, true if it is empty */
+function empty(it) {
+    let i = 0;
+    for (const _ of it) {
+        return false;
+    }
+    return true;
+}
+exports.empty = empty;
 //# sourceMappingURL=operators.js.map

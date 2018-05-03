@@ -455,3 +455,12 @@ export function count<T>(it: Iterable<T>): number {
 	}
 	return i;
 }
+
+/** Returns the false if evaluating the iterable gives any items, true if it is empty */
+export function empty<T>(it: Iterable<T>): boolean {
+	let i = 0;
+	for (const _ of it) {
+		return false;
+	}
+	return true;
+}

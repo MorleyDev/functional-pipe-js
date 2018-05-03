@@ -1,8 +1,8 @@
 import * as Strings from "./string/operators";
 import * as test from "tap";
 
-import { concat, fibonacci, infinite, primes, range } from "./iterable/generators";
-import { count, distinct, distinctUntilChanged, every, filter, first, flatMap, fold, last, map, orderBy, push, reduce, scan, skip, skipWhile, some, take, takeUntil, takeWhile, tap, toArray, unshift } from "./iterable/operators";
+import { concat, empty, fibonacci, infinite, primes, range } from "./iterable/generators";
+import { count, distinct, distinctUntilChanged, every, filter, first, flatMap, fold, last, map, orderBy, push, reduce, scan, skip, skipUntil, skipWhile, some, take, takeUntil, takeWhile, tap, toArray, unshift } from "./iterable/operators";
 
 import { $$ } from "./pipe";
 import { not } from "./function/operators";
@@ -17,9 +17,8 @@ test.test("project-euler", test => {
 		}
 		return false;
 	}
-
 	const powersOf = (x: number) => $$(infinite()).$$(scan((p, _) => p * x, 1));
-	const primeFactorsOf = (x: number) => $$(primes(x - 1)).$$(filter(p => x % p == 0));
+	const primeFactorsOf = (x: number) => $$(primes(x - 1)).$(takeUntil(p => p >= x)).$$(filter(p => x % p == 0));
 	const factorsOf = (x: number) => $$(primeFactorsOf(x))
 		.$(flatMap(pf => $$(infinite())
 			.$(map(i => pf * (i + 1)))
@@ -28,6 +27,8 @@ test.test("project-euler", test => {
 		.$(distinct)
 		.$(push(x))
 		.$$(unshift(1));
+
+	const countDivisors = (x: number) => $$(factorsOf(x)).$$(count);
 
 	test.test("utilities", test => {
 		test.test("isPrime", test => {
@@ -64,7 +65,7 @@ test.test("project-euler", test => {
 			test.deepEquals($$(primeFactorsOf(20)).$$(toArray), [2, 5]);
 			test.deepEquals($$(primeFactorsOf(21)).$$(toArray), [3, 7]);
 			test.deepEquals($$(primeFactorsOf(84)).$$(toArray), [2, 3, 7]);
-			test.deepEquals($$(primeFactorsOf(5)).$$(toArray).length, 0);
+			test.true($$(primeFactorsOf(5)).$$(empty));
 			test.end();
 		});
 		test.test("factorsOf", test => {
@@ -174,7 +175,7 @@ test.test("project-euler", test => {
 			.$$(first);
 		test.equals(abc, 31875000);
 		test.end();
-	})
+	});
 	test.test("#10 find the sum of primes below two million", test => {
 		const result = $$(primes(2000000)).$$(fold((prev, curr) => prev + curr));
 		test.equals(result, 142913828922);
