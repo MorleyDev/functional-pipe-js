@@ -1,3 +1,4 @@
+export * from "./match";
 
 export const then = <T, U>(map: (value: T) => U | Promise<U>) => (input: Promise<T> | T): Promise<U> => Promise.resolve(input).then(map);
 

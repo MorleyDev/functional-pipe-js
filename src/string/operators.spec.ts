@@ -30,5 +30,17 @@ test.test("string/operators", test => {
 		test.equals(Strings.charAt(30)("abcdefghijklmnopqrstuvwxyz"), undefined);
 		test.end();
 	});
+
+	test.test("replace :: (String, String) -> String -> String", test => {
+		test.equals(Strings.replace("abc", "def")("helloabcworldabctree"), "hellodefworlddeftree");
+		test.equals(Strings.replace("abc", "def")("helloworld"), "helloworld");
+		test.end();
+	});
+	test.test("replace :: (RegExp, String) -> String -> String", test => {
+		test.equals(Strings.replace(/abc/g, "def")("helloabcworldabctree"), "hellodefworlddeftree");
+		test.equals(Strings.replace(/abc/g, "def")("helloworld"), "helloworld");
+		test.end();
+	});
+
 	test.end();
 });

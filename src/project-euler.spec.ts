@@ -239,5 +239,6 @@ test.test("project-euler", test => {
 		test.equals(max, 70600674);
 		test.end();
 	});
+
 	test.end();
 });
