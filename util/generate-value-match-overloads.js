@@ -5,11 +5,14 @@ export type DefaultPattern<T, U> = [(val: T) => true, U | ((val: T) => U)];
 
 export function match<T, U>(defaultValue: DefaultPattern<T, U>): (val: T) => U;`)
 
-const parts = Array(25).fill(0).map((_, index) => `p${index}: Pattern<T, U>`);
+const parts = Array(25).fill(0).map((_, index) => [`U${index}`, `p${index}: Pattern<T, U${index}>`]);
 for (let j = 1; j <= 25; ++j) {
-	const parameterParams = Array(j).fill(0).map((_, index) => parts[index]).join(", ");
-	console.log(`export function match<T, U>(${parameterParams}, defaultValue: DefaultPattern<T, U>): (val: T) => U;`);
+	const genericParams = Array(j).fill(0).map((_, index) => parts[index][0]).join(", ");
+	const resultParams = Array(j).fill(0).map((_, index) => parts[index][0]).join(" | ");
+	const parameterParams = Array(j).fill(0).map((_, index) => parts[index][1]).join(", ");
+	console.log(`export function match<T, ${genericParams}, U>(${parameterParams}, defaultValue: DefaultPattern<T, U>): (val: T) => ${resultParams} | U;`);
 }
+
 console.log(`
 export function match<T, U>(...patterns: Patterns<T, U>): (val: T) => U {
     return (val) => {
