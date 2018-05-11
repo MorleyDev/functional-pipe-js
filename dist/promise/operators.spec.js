@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const test = require("tap");
 const Operators = require("./operators");
+const test = require("tap");
 const pipe_1 = require("../pipe");
 test.test("promise/operators", test => {
     test.test("then :: (T -> U) -> T -> Promise U", async (test) => {
@@ -60,7 +60,7 @@ test.test("promise/operators", test => {
         test.equals(await Operators.match([() => true, "10"])(10), "10");
         test.equals(await Operators.match([() => true, async (x) => x.toString()])(10), "10");
         test.equals(await Operators.match([() => Promise.resolve(true), "10"])(10), "10");
-        test.equals(await Operators.match([() => Promise.resolve(true), "10"])(Promise.resolve(10)), "10");
+        test.equals(await Operators.match([(x) => false, 25], [(x) => Promise.resolve(true), "10"])(Promise.resolve(10)), "10");
         test.equals(await Operators.match([11, "26"], [10, "25"], [12, "55"], [() => true, ""])(10), "25");
         test.equals(await Operators.match([async (x) => x !== 10, "26"], [async (x) => x === 10, "25"], [12, "55"], [() => true, ""])(10), "25");
         test.equals(await Operators.match([x => x !== 10, "26"], [x => x === 10, "25"], [12, "55"], [() => true, ""])(10), "25");
