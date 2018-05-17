@@ -4,4 +4,5 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./match"));
+__export(require("./maybeMatch"));
 //# sourceMappingURL=operators.js.map
