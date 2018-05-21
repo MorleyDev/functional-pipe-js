@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = require("path");
+if (typeof Symbol.asyncIterator === "undefined") {
+    Symbol.asyncIterator = Symbol();
+}
 const filterArg = process.argv.find(f => f.startsWith("--filter="));
 const filter = filterArg != null
     ? (fullPath) => {

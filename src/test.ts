@@ -2,6 +2,10 @@ import { readdirSync, statSync } from "fs";
 
 import { join } from "path";
 
+if (typeof Symbol.asyncIterator === "undefined") {
+	(Symbol.asyncIterator as any) = Symbol();
+}
+
 const filterArg = process.argv.find(f => f.startsWith("--filter="));
 const filter = filterArg != null
 	? (fullPath: string) => {

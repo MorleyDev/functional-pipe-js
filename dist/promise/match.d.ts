@@ -1,6 +1,4 @@
-export declare type Pattern<T, U> = [T | ((val: T) => boolean) | ((val: T) => Promise<boolean>), U | ((val: T) => U) | ((val: T) => Promise<U>)];
-export declare type Patterns<T, U> = Pattern<T, U>[];
-export declare type DefaultPattern<T, U> = [((val: T) => true) | ((val: T) => Promise<true>), U | ((val: T) => U) | ((val: T) => Promise<U>)];
+import { DefaultPattern, Pattern } from "./pattern";
 export declare function match<T, U>(defaultValue: DefaultPattern<T, U>): (val: T | Promise<T>) => Promise<U>;
 export declare function match<T, U0, U>(p0: Pattern<T, U0>, defaultValue: DefaultPattern<T, U | Promise<U>>): (val: T | Promise<T>) => Promise<U0 | U>;
 export declare function match<T, U0, U1, U>(p0: Pattern<T, U0>, p1: Pattern<T, U1>, defaultValue: DefaultPattern<T, U | Promise<U>>): (val: T | Promise<T>) => Promise<U0 | U1 | U>;
