@@ -240,5 +240,24 @@ test.test("project-euler", test => {
 		test.end();
 	});
 
+	test.test("#14 Longest Collatz sequence for a seed below one million", test => {
+		function* collatz(seed: number): Iterable<number> {
+			function step(n: number) {
+				return n % 2 === 0 ? n / 2 : (3 * n + 1);
+			}
+
+			for (let value = seed; value != 1; value = step(value)) {
+				yield value;
+			}
+		}
+
+		const result = $$(infinite(1))
+			.$(take(1000000))
+			.$(map(x => ({ seed: x, count: count(collatz(x)) })))
+			.$$(fold((p, c) => p.count > c.count ? p : c));
+		test.equals(result && result.seed, 837799);
+		test.end();
+	});
+
 	test.end();
 });
