@@ -246,13 +246,12 @@ test.test("project-euler", test => {
 				return n % 2 === 0 ? n / 2 : (3 * n + 1);
 			}
 
-			for (let value = seed; value != 1; value = step(value)) {
+			for (let value = seed; value > 1; value = step(value)) {
 				yield value;
 			}
 		}
 
-		const result = $$(infinite(1))
-			.$(take(1000000))
+		const result = $$(range(1, 999999))
 			.$(map(x => ({ seed: x, count: count(collatz(x)) })))
 			.$$(fold((p, c) => p.count > c.count ? p : c));
 		test.equals(result && result.seed, 837799);

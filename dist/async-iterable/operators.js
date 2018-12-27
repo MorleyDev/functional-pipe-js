@@ -1,14 +1,16 @@
 "use strict";
 var __asyncValues = (this && this.__asyncValues) || function (o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator];
-    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 var __await = (this && this.__await) || function (v) { return this instanceof __await ? (this.v = v, this) : new __await(v); }
 var __asyncDelegator = (this && this.__asyncDelegator) || function (o) {
     var i, p;
     return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
 };
 var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _arguments, generator) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
@@ -16,7 +18,7 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
     return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
     function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
     function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
     function fulfill(value) { resume("next", value); }
     function reject(value) { resume("throw", value); }
     function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
@@ -25,7 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** Yield the original sequence unmodified */
 function identity(iterable) {
     return __asyncGenerator(this, arguments, function* identity_1() {
-        return yield __await(yield* __asyncDelegator(__asyncValues(iterable)));
+        return yield __await(yield __await(yield* __asyncDelegator(__asyncValues(iterable))));
     });
 }
 exports.identity = identity;
@@ -33,12 +35,13 @@ exports.identity = identity;
 function tap(tapper) {
     return function (it) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_1, _a;
             let index = 0;
             try {
                 for (var it_1 = __asyncValues(it), it_1_1; it_1_1 = yield __await(it_1.next()), !it_1_1.done;) {
-                    const value = yield __await(it_1_1.value);
+                    const value = it_1_1.value;
                     yield __await(tapper(value, index));
-                    yield value;
+                    yield yield __await(value);
                     index = index + 1;
                 }
             }
@@ -49,7 +52,6 @@ function tap(tapper) {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-            var e_1, _a;
         });
     };
 }
@@ -58,11 +60,12 @@ exports.tap = tap;
 function map(mapper) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_2, _a;
             let index = 0;
             try {
                 for (var iterable_1 = __asyncValues(iterable), iterable_1_1; iterable_1_1 = yield __await(iterable_1.next()), !iterable_1_1.done;) {
-                    const value = yield __await(iterable_1_1.value);
-                    yield mapper(value, index);
+                    const value = iterable_1_1.value;
+                    yield yield __await(mapper(value, index));
                     index = index + 1;
                 }
             }
@@ -73,7 +76,6 @@ function map(mapper) {
                 }
                 finally { if (e_2) throw e_2.error; }
             }
-            var e_2, _a;
         });
     };
 }
@@ -82,35 +84,35 @@ exports.map = map;
 function flatMap(mapper) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_3, _a, e_4, _b;
             let index = 0;
             try {
                 for (var iterable_2 = __asyncValues(iterable), iterable_2_1; iterable_2_1 = yield __await(iterable_2.next()), !iterable_2_1.done;) {
-                    const value = yield __await(iterable_2_1.value);
+                    const value = iterable_2_1.value;
                     const innerAsyncIterableProm = mapper(value, index);
                     try {
                         for (var innerAsyncIterableProm_1 = __asyncValues(innerAsyncIterableProm), innerAsyncIterableProm_1_1; innerAsyncIterableProm_1_1 = yield __await(innerAsyncIterableProm_1.next()), !innerAsyncIterableProm_1_1.done;) {
-                            const inner = yield __await(innerAsyncIterableProm_1_1.value);
-                            yield inner;
+                            const inner = innerAsyncIterableProm_1_1.value;
+                            yield yield __await(inner);
                         }
                     }
-                    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+                    catch (e_4_1) { e_4 = { error: e_4_1 }; }
                     finally {
                         try {
-                            if (innerAsyncIterableProm_1_1 && !innerAsyncIterableProm_1_1.done && (_a = innerAsyncIterableProm_1.return)) yield __await(_a.call(innerAsyncIterableProm_1));
+                            if (innerAsyncIterableProm_1_1 && !innerAsyncIterableProm_1_1.done && (_b = innerAsyncIterableProm_1.return)) yield __await(_b.call(innerAsyncIterableProm_1));
                         }
-                        finally { if (e_3) throw e_3.error; }
+                        finally { if (e_4) throw e_4.error; }
                     }
                     index = index + 1;
                 }
             }
-            catch (e_4_1) { e_4 = { error: e_4_1 }; }
+            catch (e_3_1) { e_3 = { error: e_3_1 }; }
             finally {
                 try {
-                    if (iterable_2_1 && !iterable_2_1.done && (_b = iterable_2.return)) yield __await(_b.call(iterable_2));
+                    if (iterable_2_1 && !iterable_2_1.done && (_a = iterable_2.return)) yield __await(_a.call(iterable_2));
                 }
-                finally { if (e_4) throw e_4.error; }
+                finally { if (e_3) throw e_3.error; }
             }
-            var e_4, _b, e_3, _a;
         });
     };
 }
@@ -119,12 +121,13 @@ exports.flatMap = flatMap;
 function filter(predicate) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_5, _a;
             let index = 0;
             try {
                 for (var iterable_3 = __asyncValues(iterable), iterable_3_1; iterable_3_1 = yield __await(iterable_3.next()), !iterable_3_1.done;) {
-                    const value = yield __await(iterable_3_1.value);
+                    const value = iterable_3_1.value;
                     if (yield __await(predicate(value, index))) {
-                        yield value;
+                        yield yield __await(value);
                     }
                     index = index + 1;
                 }
@@ -136,7 +139,6 @@ function filter(predicate) {
                 }
                 finally { if (e_5) throw e_5.error; }
             }
-            var e_5, _a;
         });
     };
 }
@@ -144,11 +146,12 @@ exports.filter = filter;
 /** Reduce the items in an iterable down to a single instance of initial type, returning the final result result of the reduction */
 function reduce(predicate, initial) {
     return async function (iterable) {
+        var e_6, _a;
         let index = 0;
         let prevState = initial;
         try {
             for (var iterable_4 = __asyncValues(iterable), iterable_4_1; iterable_4_1 = await iterable_4.next(), !iterable_4_1.done;) {
-                const value = await iterable_4_1.value;
+                const value = iterable_4_1.value;
                 prevState = await predicate(prevState, value, index);
                 index = index + 1;
             }
@@ -161,7 +164,6 @@ function reduce(predicate, initial) {
             finally { if (e_6) throw e_6.error; }
         }
         return prevState;
-        var e_6, _a;
     };
 }
 exports.reduce = reduce;
@@ -169,13 +171,14 @@ exports.reduce = reduce;
 function scan(predicate, initial) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_7, _a;
             let index = 0;
             let prevState = initial;
             try {
                 for (var iterable_5 = __asyncValues(iterable), iterable_5_1; iterable_5_1 = yield __await(iterable_5.next()), !iterable_5_1.done;) {
-                    const value = yield __await(iterable_5_1.value);
+                    const value = iterable_5_1.value;
                     prevState = yield __await(Promise.resolve(predicate(prevState, value, index)));
-                    yield prevState;
+                    yield yield __await(prevState);
                     index = index + 1;
                 }
             }
@@ -186,8 +189,7 @@ function scan(predicate, initial) {
                 }
                 finally { if (e_7) throw e_7.error; }
             }
-            return prevState;
-            var e_7, _a;
+            return yield __await(prevState);
         });
     };
 }
@@ -195,11 +197,12 @@ exports.scan = scan;
 /** Reduce the items in an iterable down to a single instance of the same type as the type contained by that AsyncIterable */
 function fold(predicate) {
     return async function (iterable) {
+        var e_8, _a;
         let index = 0;
         let prevState;
         try {
             for (var iterable_6 = __asyncValues(iterable), iterable_6_1; iterable_6_1 = await iterable_6.next(), !iterable_6_1.done;) {
-                const value = await iterable_6_1.value;
+                const value = iterable_6_1.value;
                 if (index == 0) {
                     prevState = value;
                 }
@@ -217,7 +220,6 @@ function fold(predicate) {
             finally { if (e_8) throw e_8.error; }
         }
         return prevState;
-        var e_8, _a;
     };
 }
 exports.fold = fold;
@@ -225,14 +227,15 @@ exports.fold = fold;
 function take(count) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_9, _a;
             let i = 0;
             try {
                 for (var iterable_7 = __asyncValues(iterable), iterable_7_1; iterable_7_1 = yield __await(iterable_7.next()), !iterable_7_1.done;) {
-                    const item = yield __await(iterable_7_1.value);
+                    const item = iterable_7_1.value;
                     if (i >= count) {
-                        return;
+                        return yield __await(void 0);
                     }
-                    yield item;
+                    yield yield __await(item);
                     i = i + 1;
                 }
             }
@@ -243,7 +246,6 @@ function take(count) {
                 }
                 finally { if (e_9) throw e_9.error; }
             }
-            var e_9, _a;
         });
     };
 }
@@ -252,10 +254,11 @@ exports.take = take;
 function takeLast(count) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_10, _a;
             const buffer = [];
             try {
                 for (var iterable_8 = __asyncValues(iterable), iterable_8_1; iterable_8_1 = yield __await(iterable_8.next()), !iterable_8_1.done;) {
-                    const item = yield __await(iterable_8_1.value);
+                    const item = iterable_8_1.value;
                     buffer.push(item);
                     if (buffer.length > count) {
                         buffer.shift();
@@ -269,8 +272,7 @@ function takeLast(count) {
                 }
                 finally { if (e_10) throw e_10.error; }
             }
-            return yield __await(yield* __asyncDelegator(__asyncValues(buffer)));
-            var e_10, _a;
+            return yield __await(yield __await(yield* __asyncDelegator(__asyncValues(buffer))));
         });
     };
 }
@@ -279,10 +281,11 @@ exports.takeLast = takeLast;
 function skipLast(count) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_11, _a;
             const buffer = [];
             try {
                 for (var iterable_9 = __asyncValues(iterable), iterable_9_1; iterable_9_1 = yield __await(iterable_9.next()), !iterable_9_1.done;) {
-                    const item = yield __await(iterable_9_1.value);
+                    const item = iterable_9_1.value;
                     buffer.push(item);
                 }
             }
@@ -294,20 +297,20 @@ function skipLast(count) {
                 finally { if (e_11) throw e_11.error; }
             }
             if (buffer.length < count) {
-                return;
+                return yield __await(void 0);
             }
             yield __await(yield* __asyncDelegator(__asyncValues(buffer.slice(0, buffer.length - count))));
-            var e_11, _a;
         });
     };
 }
 exports.skipLast = skipLast;
 /** Take only the last item in an iterable sequence */
 async function last(iterable) {
+    var e_12, _a;
     let last = undefined;
     try {
         for (var iterable_10 = __asyncValues(iterable), iterable_10_1; iterable_10_1 = await iterable_10.next(), !iterable_10_1.done;) {
-            const item = await iterable_10_1.value;
+            const item = iterable_10_1.value;
             last = item;
         }
     }
@@ -319,14 +322,14 @@ async function last(iterable) {
         finally { if (e_12) throw e_12.error; }
     }
     return last;
-    var e_12, _a;
 }
 exports.last = last;
 /** Take only the first item in an iterable sequence */
 async function first(iterable) {
+    var e_13, _a;
     try {
         for (var iterable_11 = __asyncValues(iterable), iterable_11_1; iterable_11_1 = await iterable_11.next(), !iterable_11_1.done;) {
-            const item = await iterable_11_1.value;
+            const item = iterable_11_1.value;
             return item;
         }
     }
@@ -338,19 +341,19 @@ async function first(iterable) {
         finally { if (e_13) throw e_13.error; }
     }
     return undefined;
-    var e_13, _a;
 }
 exports.first = first;
 /** Skip the first N items in a iterable sequence, and then yield the remaining items */
 function skip(count) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_14, _a;
             let i = 0;
             try {
                 for (var iterable_12 = __asyncValues(iterable), iterable_12_1; iterable_12_1 = yield __await(iterable_12.next()), !iterable_12_1.done;) {
-                    const item = yield __await(iterable_12_1.value);
+                    const item = iterable_12_1.value;
                     if (i >= count) {
-                        yield item;
+                        yield yield __await(item);
                     }
                     i = i + 1;
                 }
@@ -362,7 +365,6 @@ function skip(count) {
                 }
                 finally { if (e_14) throw e_14.error; }
             }
-            var e_14, _a;
         });
     };
 }
@@ -371,14 +373,15 @@ exports.skip = skip;
 function takeWhile(predicate) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_15, _a;
             let i = 0;
             try {
                 for (var iterable_13 = __asyncValues(iterable), iterable_13_1; iterable_13_1 = yield __await(iterable_13.next()), !iterable_13_1.done;) {
-                    const item = yield __await(iterable_13_1.value);
+                    const item = iterable_13_1.value;
                     if (!(yield __await(Promise.resolve(predicate(item, i))))) {
                         break;
                     }
-                    yield item;
+                    yield yield __await(item);
                     i = i + 1;
                 }
             }
@@ -389,7 +392,6 @@ function takeWhile(predicate) {
                 }
                 finally { if (e_15) throw e_15.error; }
             }
-            var e_15, _a;
         });
     };
 }
@@ -398,14 +400,15 @@ exports.takeWhile = takeWhile;
 function takeUntil(predicate) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_16, _a;
             let i = 0;
             try {
                 for (var iterable_14 = __asyncValues(iterable), iterable_14_1; iterable_14_1 = yield __await(iterable_14.next()), !iterable_14_1.done;) {
-                    const item = yield __await(iterable_14_1.value);
+                    const item = iterable_14_1.value;
                     if (yield __await(predicate(item, i))) {
-                        return;
+                        return yield __await(void 0);
                     }
-                    yield item;
+                    yield yield __await(item);
                     i = i + 1;
                 }
             }
@@ -416,7 +419,6 @@ function takeUntil(predicate) {
                 }
                 finally { if (e_16) throw e_16.error; }
             }
-            var e_16, _a;
         });
     };
 }
@@ -425,20 +427,21 @@ exports.takeUntil = takeUntil;
 function skipWhile(predicate) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_17, _a;
             let i = 0;
             let canReturn = false;
             try {
                 for (var iterable_15 = __asyncValues(iterable), iterable_15_1; iterable_15_1 = yield __await(iterable_15.next()), !iterable_15_1.done;) {
-                    const item = yield __await(iterable_15_1.value);
+                    const item = iterable_15_1.value;
                     if (!canReturn) {
                         canReturn = !(yield __await(Promise.resolve(predicate(item, i))));
                         if (canReturn) {
-                            yield item;
+                            yield yield __await(item);
                         }
                         i = i + 1;
                     }
                     else {
-                        yield item;
+                        yield yield __await(item);
                     }
                 }
             }
@@ -449,7 +452,6 @@ function skipWhile(predicate) {
                 }
                 finally { if (e_17) throw e_17.error; }
             }
-            var e_17, _a;
         });
     };
 }
@@ -458,20 +460,21 @@ exports.skipWhile = skipWhile;
 function skipUntil(predicate) {
     return function (iterable) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_18, _a;
             let i = 0;
             let canReturn = false;
             try {
                 for (var iterable_16 = __asyncValues(iterable), iterable_16_1; iterable_16_1 = yield __await(iterable_16.next()), !iterable_16_1.done;) {
-                    const item = yield __await(iterable_16_1.value);
+                    const item = iterable_16_1.value;
                     if (!canReturn) {
                         canReturn = yield __await(predicate(item, i));
                         if (canReturn) {
-                            yield item;
+                            yield yield __await(item);
                         }
                         i = i + 1;
                     }
                     else {
-                        yield item;
+                        yield yield __await(item);
                     }
                 }
             }
@@ -482,7 +485,6 @@ function skipUntil(predicate) {
                 }
                 finally { if (e_18) throw e_18.error; }
             }
-            var e_18, _a;
         });
     };
 }
@@ -490,10 +492,11 @@ exports.skipUntil = skipUntil;
 /** Enumerate until index and return the element at index, or consumes and return undefined */
 function elementAtOrDefault(index, or) {
     return async function (it) {
+        var e_19, _a;
         let i = 0;
         try {
             for (var it_2 = __asyncValues(it), it_2_1; it_2_1 = await it_2.next(), !it_2_1.done;) {
-                const item = await it_2_1.value;
+                const item = it_2_1.value;
                 if (i === index) {
                     return item;
                 }
@@ -508,7 +511,6 @@ function elementAtOrDefault(index, or) {
             finally { if (e_19) throw e_19.error; }
         }
         return or;
-        var e_19, _a;
     };
 }
 exports.elementAtOrDefault = elementAtOrDefault;
@@ -516,10 +518,11 @@ exports.elementAtOrDefault = elementAtOrDefault;
 function concat(...iterables) {
     return function (it) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_20, _a;
             yield __await(yield* __asyncDelegator(__asyncValues(it)));
             try {
                 for (var iterables_1 = __asyncValues(iterables), iterables_1_1; iterables_1_1 = yield __await(iterables_1.next()), !iterables_1_1.done;) {
-                    const iterable = yield __await(iterables_1_1.value);
+                    const iterable = iterables_1_1.value;
                     yield __await(yield* __asyncDelegator(__asyncValues(iterable)));
                 }
             }
@@ -530,7 +533,6 @@ function concat(...iterables) {
                 }
                 finally { if (e_20) throw e_20.error; }
             }
-            var e_20, _a;
         });
     };
 }
@@ -539,11 +541,12 @@ exports.concat = concat;
 function push(...next) {
     return function (it) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_21, _a;
             yield __await(yield* __asyncDelegator(__asyncValues(it)));
             try {
                 for (var next_1 = __asyncValues(next), next_1_1; next_1_1 = yield __await(next_1.next()), !next_1_1.done;) {
-                    const iterable = yield __await(next_1_1.value);
-                    yield iterable;
+                    const iterable = next_1_1.value;
+                    yield yield __await(iterable);
                 }
             }
             catch (e_21_1) { e_21 = { error: e_21_1 }; }
@@ -553,7 +556,6 @@ function push(...next) {
                 }
                 finally { if (e_21) throw e_21.error; }
             }
-            var e_21, _a;
         });
     };
 }
@@ -563,7 +565,7 @@ function unshift(...next) {
     return function (it) {
         return __asyncGenerator(this, arguments, function* () {
             for (let i = 0; i < next.length; ++i)
-                yield next[next.length - i - 1];
+                yield yield __await(next[next.length - i - 1]);
             yield __await(yield* __asyncDelegator(__asyncValues(it)));
         });
     };
@@ -572,10 +574,11 @@ exports.unshift = unshift;
 /** True if at least one item in a sequence matches the given predicate */
 function some(predicate) {
     return async (it) => {
+        var e_22, _a;
         let index = 0;
         try {
             for (var it_3 = __asyncValues(it), it_3_1; it_3_1 = await it_3.next(), !it_3_1.done;) {
-                const item = await it_3_1.value;
+                const item = it_3_1.value;
                 if (await predicate(item, index)) {
                     return true;
                 }
@@ -590,17 +593,17 @@ function some(predicate) {
             finally { if (e_22) throw e_22.error; }
         }
         return false;
-        var e_22, _a;
     };
 }
 exports.some = some;
 /** True if every item in a sequence matches the given predicate */
 function every(predicate) {
     return async (it) => {
+        var e_23, _a;
         let i = 0;
         try {
             for (var it_4 = __asyncValues(it), it_4_1; it_4_1 = await it_4.next(), !it_4_1.done;) {
-                const item = await it_4_1.value;
+                const item = it_4_1.value;
                 if (!await Promise.resolve(predicate(item, i))) {
                     return false;
                 }
@@ -615,20 +618,20 @@ function every(predicate) {
             finally { if (e_23) throw e_23.error; }
         }
         return true;
-        var e_23, _a;
     };
 }
 exports.every = every;
 /** Play unique items from a set */
 function distinct(it) {
     return __asyncGenerator(this, arguments, function* distinct_1() {
+        var e_24, _a;
         const resultSet = new Set();
         try {
             for (var it_5 = __asyncValues(it), it_5_1; it_5_1 = yield __await(it_5.next()), !it_5_1.done;) {
-                const item = yield __await(it_5_1.value);
+                const item = it_5_1.value;
                 if (!resultSet.has(item)) {
                     resultSet.add(item);
-                    yield item;
+                    yield yield __await(item);
                 }
             }
         }
@@ -639,7 +642,6 @@ function distinct(it) {
             }
             finally { if (e_24) throw e_24.error; }
         }
-        var e_24, _a;
     });
 }
 exports.distinct = distinct;
@@ -661,14 +663,15 @@ function orderBy(keySelector, comparison) {
     const trueComparison = comparison || defaultComparison;
     return function (item) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_25, _a;
             const keyedMapper = map((item, index) => ({ item, key: trueKeySelector(item, index) }));
             const keyed = keyedMapper(item);
             const keyedArray = yield __await(toWriteableArray(keyed));
             keyedArray.sort((a, b) => trueComparison(a.key, b.key));
             try {
                 for (var keyedArray_1 = __asyncValues(keyedArray), keyedArray_1_1; keyedArray_1_1 = yield __await(keyedArray_1.next()), !keyedArray_1_1.done;) {
-                    const { item } = yield __await(keyedArray_1_1.value);
-                    yield item;
+                    const { item } = keyedArray_1_1.value;
+                    yield yield __await(item);
                 }
             }
             catch (e_25_1) { e_25 = { error: e_25_1 }; }
@@ -678,7 +681,6 @@ function orderBy(keySelector, comparison) {
                 }
                 finally { if (e_25) throw e_25.error; }
             }
-            var e_25, _a;
         });
     };
 }
@@ -694,12 +696,13 @@ exports.flip = flip;
 function repeat(times) {
     return function (it) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_26, _a;
             const buffer = [];
             try {
                 for (var it_6 = __asyncValues(it), it_6_1; it_6_1 = yield __await(it_6.next()), !it_6_1.done;) {
-                    const item = yield __await(it_6_1.value);
+                    const item = it_6_1.value;
                     buffer.push(item);
-                    yield item;
+                    yield yield __await(item);
                 }
             }
             catch (e_26_1) { e_26 = { error: e_26_1 }; }
@@ -712,7 +715,6 @@ function repeat(times) {
             for (let i = 0; i < times; ++i) {
                 yield __await(yield* __asyncDelegator(__asyncValues(buffer)));
             }
-            var e_26, _a;
         });
     };
 }
@@ -720,12 +722,13 @@ exports.repeat = repeat;
 /** Play the given AsyncIterable, and then play back that AsyncIterable in reverse */
 function doppler(it) {
     return __asyncGenerator(this, arguments, function* doppler_1() {
+        var e_27, _a;
         const buffer = [];
         try {
             for (var it_7 = __asyncValues(it), it_7_1; it_7_1 = yield __await(it_7.next()), !it_7_1.done;) {
-                const item = yield __await(it_7_1.value);
+                const item = it_7_1.value;
                 buffer.push(item);
-                yield item;
+                yield yield __await(item);
             }
         }
         catch (e_27_1) { e_27 = { error: e_27_1 }; }
@@ -737,7 +740,6 @@ function doppler(it) {
         }
         buffer.reverse();
         yield __await(yield* __asyncDelegator(__asyncValues(buffer)));
-        var e_27, _a;
     });
 }
 exports.doppler = doppler;
@@ -750,11 +752,12 @@ exports.shuffle = shuffle;
 function or(other) {
     return function (source) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_28, _a;
             let hasYieldedItem = false;
             try {
                 for (var source_1 = __asyncValues(source), source_1_1; source_1_1 = yield __await(source_1.next()), !source_1_1.done;) {
-                    const item = yield __await(source_1_1.value);
-                    yield item;
+                    const item = source_1_1.value;
+                    yield yield __await(item);
                     hasYieldedItem = true;
                 }
             }
@@ -768,17 +771,17 @@ function or(other) {
             if (!hasYieldedItem) {
                 yield __await(yield* __asyncDelegator(__asyncValues(other)));
             }
-            var e_28, _a;
         });
     };
 }
 exports.or = or;
 /** Evaluate the entire iterable to a readonly array. Provided as type deduction seems to fail when using Array.from to accomplish this outside of a lamda */
 async function toArray(iterable) {
+    var e_29, _a;
     const blob = [];
     try {
         for (var iterable_17 = __asyncValues(iterable), iterable_17_1; iterable_17_1 = await iterable_17.next(), !iterable_17_1.done;) {
-            const it = await iterable_17_1.value;
+            const it = iterable_17_1.value;
             blob.push(it);
         }
     }
@@ -790,15 +793,15 @@ async function toArray(iterable) {
         finally { if (e_29) throw e_29.error; }
     }
     return blob;
-    var e_29, _a;
 }
 exports.toArray = toArray;
 /** Evaluate the entire iterable to a readonly array. Provided as type deduction seems to fail when using Array.from to accomplish this outside of a lamda */
 async function toWriteableArray(iterable) {
+    var e_30, _a;
     const blob = [];
     try {
         for (var iterable_18 = __asyncValues(iterable), iterable_18_1; iterable_18_1 = await iterable_18.next(), !iterable_18_1.done;) {
-            const it = await iterable_18_1.value;
+            const it = iterable_18_1.value;
             blob.push(it);
         }
     }
@@ -810,22 +813,22 @@ async function toWriteableArray(iterable) {
         finally { if (e_30) throw e_30.error; }
     }
     return blob;
-    var e_30, _a;
 }
 exports.toWriteableArray = toWriteableArray;
 /** Replaces the value of an item at the specified index, returning the new iterable set */
 function updateAt(index, value) {
     return function (source) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_31, _a;
             let i = 0;
             try {
                 for (var source_2 = __asyncValues(source), source_2_1; source_2_1 = yield __await(source_2.next()), !source_2_1.done;) {
-                    const item = yield __await(source_2_1.value);
+                    const item = source_2_1.value;
                     if (i === index) {
-                        yield value;
+                        yield yield __await(value);
                     }
                     else {
-                        yield item;
+                        yield yield __await(item);
                     }
                     i = i + 1;
                 }
@@ -837,7 +840,6 @@ function updateAt(index, value) {
                 }
                 finally { if (e_31) throw e_31.error; }
             }
-            var e_31, _a;
         });
     };
 }
@@ -846,12 +848,13 @@ exports.updateAt = updateAt;
 function removeAt(index) {
     return function (source) {
         return __asyncGenerator(this, arguments, function* () {
+            var e_32, _a;
             let i = 0;
             try {
                 for (var source_3 = __asyncValues(source), source_3_1; source_3_1 = yield __await(source_3.next()), !source_3_1.done;) {
-                    const item = yield __await(source_3_1.value);
+                    const item = source_3_1.value;
                     if (i !== index) {
-                        yield item;
+                        yield yield __await(item);
                     }
                     i = i + 1;
                 }
@@ -863,17 +866,17 @@ function removeAt(index) {
                 }
                 finally { if (e_32) throw e_32.error; }
             }
-            var e_32, _a;
         });
     };
 }
 exports.removeAt = removeAt;
 /** Returns a promise of the count of items returned by evaluating the provided iterable */
 async function count(source) {
+    var e_33, _a;
     let i = 0;
     try {
         for (var source_4 = __asyncValues(source), source_4_1; source_4_1 = await source_4.next(), !source_4_1.done;) {
-            const it = await source_4_1.value;
+            const it = source_4_1.value;
             ++i;
         }
     }
@@ -885,15 +888,15 @@ async function count(source) {
         finally { if (e_33) throw e_33.error; }
     }
     return i;
-    var e_33, _a;
 }
 exports.count = count;
 /** Returns a promise of true if evaluating the iterable gives any items, false otherwise */
 async function empty(source) {
+    var e_34, _a;
     let i = 0;
     try {
         for (var source_5 = __asyncValues(source), source_5_1; source_5_1 = await source_5.next(), !source_5_1.done;) {
-            const it = await source_5_1.value;
+            const it = source_5_1.value;
             return false;
         }
     }
@@ -905,7 +908,6 @@ async function empty(source) {
         finally { if (e_34) throw e_34.error; }
     }
     return true;
-    var e_34, _a;
 }
 exports.empty = empty;
 //# sourceMappingURL=operators.js.map

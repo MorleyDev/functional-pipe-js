@@ -10,7 +10,7 @@ __export(require("./xor"));
 function identity(value) { return value; }
 exports.identity = identity;
 function val(value) {
-    return (...args) => value;
+    return (..._) => value;
 }
 exports.val = val;
 //# sourceMappingURL=operators.js.map

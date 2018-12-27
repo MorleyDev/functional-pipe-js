@@ -1,6 +1,6 @@
 import { Maybe } from "../maybe";
 /** Match the maybe, calling just if there is a value and nothing if not, and return the following value */
-export declare function match<T, U>({just, nothing}: {
+export declare function match<T, U>({ just, nothing }: {
     just: (value: T) => U;
     nothing: () => U;
 }): (maybe: Maybe<T>) => U;

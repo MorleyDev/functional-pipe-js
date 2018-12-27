@@ -17,7 +17,8 @@ exports.maybeMatch = maybeMatch;
 function matches(input) {
     return async ([test, _]) => {
         if (typeof test === "function") {
-            return await test(input);
+            const func = test;
+            return await func(input);
         }
         else {
             return test === input;
@@ -26,7 +27,8 @@ function matches(input) {
 }
 async function extract(input, [_, out]) {
     if (typeof out === "function") {
-        return await out(input);
+        const func = out;
+        return await func(input);
     }
     else {
         return out;

@@ -12,7 +12,8 @@ exports.match = match;
 function matches(input) {
     return ([test, _]) => {
         if (typeof test === "function") {
-            return test(input);
+            const func = test;
+            return func(input);
         }
         else {
             return test === input;
@@ -21,7 +22,8 @@ function matches(input) {
 }
 function extract(input, [_, out]) {
     if (typeof out === "function") {
-        return out(input);
+        const func = out;
+        return func(input);
     }
     else {
         return out;

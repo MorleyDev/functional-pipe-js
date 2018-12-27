@@ -221,34 +221,11 @@ test.test("project-euler", test => {
             function step(n) {
                 return n % 2 === 0 ? n / 2 : (3 * n + 1);
             }
-            for (let value = seed; value != 1; value = step(value)) {
+            for (let value = seed; value > 1; value = step(value)) {
                 yield value;
             }
         }
-        const cache = {};
-        function collatzCount(seed) {
-            function step(n) {
-                return n % 2 === 0
-                    ? n / 2
-                    : (3 * n + 1);
-            }
-            const s = cache[seed];
-            if (s != null) {
-                return s;
-            }
-            let count = 0;
-            for (let value = seed; value != 1; value = step(value), count = count + 1) {
-                const c = cache[value];
-                if (c != null) {
-                    cache[seed] = count;
-                    return count + c;
-                }
-            }
-            cache[seed] = count;
-            return count;
-        }
-        const result = pipe_1.$$(generators_1.infinite(1))
-            .$(operators_1.take(1000000))
+        const result = pipe_1.$$(generators_1.range(1, 999999))
             .$(operators_1.map(x => ({ seed: x, count: operators_1.count(collatz(x)) })))
             .$$(operators_1.fold((p, c) => p.count > c.count ? p : c));
         test.equals(result && result.seed, 837799);

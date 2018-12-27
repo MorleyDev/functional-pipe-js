@@ -4,16 +4,20 @@ const maybe_1 = require("../maybe");
 function maybeMatch(...patterns) {
     return (val) => maybe_1.defer(() => {
         const pattern = patterns.find(matches(val));
-        if (pattern == null)
+        if (pattern == null) {
             return maybe_1.nothing();
-        return maybe_1.just(extract(val, pattern));
+        }
+        else {
+            return maybe_1.just(extract(val, pattern));
+        }
     });
 }
 exports.maybeMatch = maybeMatch;
 function matches(input) {
     return ([test, _]) => {
         if (typeof test === "function") {
-            return test(input);
+            const func = test;
+            return func(input);
         }
         else {
             return test === input;
@@ -22,7 +26,8 @@ function matches(input) {
 }
 function extract(input, [_, out]) {
     if (typeof out === "function") {
-        return out(input);
+        const func = out;
+        return func(input);
     }
     else {
         return out;
